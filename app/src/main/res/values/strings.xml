@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Holidays</string>
+    <string name="menu">Menu</string>
+    <string name="feat_calendar_filter">Filter\n</string>
+    <string name="feat_calendar_filter_by_year">Yearly</string>
+    <string name="feat_calendar_filter_by_month">Monthly</string>
+    <string name="feat_calendar_filter_by_day">Daily</string>
+    <string name="feat_calendar_filter_by_default">Monthly</string>
 </resources>
