@@ -1,5 +1,7 @@
 package com.aarevalo.holidays.screens.main
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -36,11 +38,13 @@ import androidx.compose.ui.unit.dp
 import com.aarevalo.holidays.R
 import com.aarevalo.holidays.screens.BottomTab
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun MainScreenRoot(){
     MainScreen()
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(
@@ -144,12 +148,14 @@ fun MainScreen(
                 )
             }
         },
-    ){
-        padding ->
-        println(padding)
-    }
+        content = { paddingValues ->
+            YearCalendar( modifier = Modifier.padding(paddingValues))
+
+        }
+    )
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Preview(showBackground = true)
 @Composable
 fun MainScreenPreview(){

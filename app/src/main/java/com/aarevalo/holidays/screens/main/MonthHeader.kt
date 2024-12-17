@@ -25,55 +25,69 @@ import androidx.compose.ui.unit.sp
 import io.github.boguszpawlowski.composecalendar.header.MonthState
 import java.time.Month
 import java.time.YearMonth
+import java.time.format.TextStyle
+import java.util.Locale
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun CustomMonthHeader(
+fun MonthHeader(
     state: MonthState,
     modifier: Modifier = Modifier,
-    monthTitleFontSize: androidx.compose.ui.unit.TextUnit = 18.sp,
+    monthTitleFontSize: androidx.compose.ui.unit.TextUnit = 12.sp,
     monthTitleColor: Color = Color.Black,
     arrowColor: Color = MaterialTheme.colorScheme.primary,
-    arrowSize: androidx.compose.ui.unit.Dp = 24.dp
+    arrowSize: androidx.compose.ui.unit.Dp = 20.dp,
+    monthlyView: Boolean = true
 ){
     Row(
-        modifier = modifier
+        modifier = if(!monthlyView){
+            modifier
             .fillMaxWidth()
-            .padding(8.dp)
-            .padding(bottom = 16.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
+            .padding(8.dp) }else{
+            modifier
+                .fillMaxWidth()
+                .padding(8.dp)
+                .padding(bottom = 16.dp)
+            },
+        horizontalArrangement = if (monthlyView) Arrangement.SpaceBetween else Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        IconButton(
-            onClick = {
-                state.currentMonth = state.currentMonth.minusMonths(1)
-                      },
-            modifier = Modifier.size(arrowSize)
-        ) {
-            Icon(
-                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
-                contentDescription = "Previous Month",
-                tint = arrowColor
-            )
+        if (monthlyView) {
+            IconButton(
+                onClick = {
+                    state.currentMonth = state.currentMonth.minusMonths(1)
+                },
+                modifier = Modifier.size(arrowSize)
+            ) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
+                    contentDescription = "Previous Month",
+                    tint = arrowColor
+                )
+            }
+
         }
 
         Text(
-            text = state.currentMonth.month.name,
+            text = state.currentMonth.month.getDisplayName(TextStyle.SHORT,Locale.getDefault()),
             fontSize = monthTitleFontSize,
             color = monthTitleColor,
-            fontWeight = FontWeight.Bold
+            fontWeight = FontWeight.W300
         )
 
-        IconButton(
-            onClick = { state.currentMonth = state.currentMonth.plusMonths(1)},
-            modifier = Modifier.size(arrowSize)
-        ) {
-            Icon(
-                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
-                contentDescription = "Next Month",
-                tint = arrowColor
-            )
+        if (monthlyView){
+            IconButton(
+                onClick = { state.currentMonth = state.currentMonth.plusMonths(1)},
+                modifier = Modifier.size(arrowSize)
+            ) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                    contentDescription = "Next Month",
+                    tint = arrowColor
+                )
+            }
         }
+
     }
 }
 
@@ -81,7 +95,7 @@ fun CustomMonthHeader(
 @Preview(showBackground = true)
 @Composable
 fun CustomMonthHeaderPreview(){
-    CustomMonthHeader(state = MonthState(
+    MonthHeader(state = MonthState(
         initialMonth = YearMonth.now(),
         minMonth = YearMonth.of(1994, Month.JANUARY),
         maxMonth = YearMonth.of(2023, Month.DECEMBER)
