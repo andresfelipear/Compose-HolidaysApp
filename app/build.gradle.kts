@@ -83,4 +83,6 @@ dependencies {
 
     implementation(libs.kotlinx.serialization.json)
 
+    // Compose Calendar
+    implementation(libs.composecalendar)
 }
