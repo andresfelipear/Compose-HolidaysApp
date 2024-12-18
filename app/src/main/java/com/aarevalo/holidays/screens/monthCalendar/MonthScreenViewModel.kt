@@ -1,4 +1,4 @@
-package com.aarevalo.holidays.screens.main
+package com.aarevalo.holidays.screens.monthCalendar
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -11,29 +11,29 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 @HiltViewModel
-class HomeScreenViewModel: ViewModel() {
-    private val _state = MutableStateFlow(HomeDataState())
+class MonthScreenViewModel: ViewModel() {
+
+    private val _state = MutableStateFlow(MonthScreenState())
     val state = _state.asStateFlow()
 
-    private val eventsChannel = Channel<HomeScreenEvent>()
+    private val eventsChannel = Channel<MonthScreenEvent>()
     val events = eventsChannel.receiveAsFlow()
 
-    fun onAction(action: HomeScreenAction) {
+    fun onAction(action: MonthScreenAction) {
         viewModelScope.launch {
             when(action) {
-                is HomeScreenAction.UpdateYear -> {
+                is MonthScreenAction.UpdateMonth -> {
                     if (action.increment) {
                         _state.update {
-                            it.copy(currentYear = it.currentYear + 1)
+                            it.copy(currentMonth = it.currentMonth.plusMonths(1))
                         }
                     } else{
                         _state.update {
-                            it.copy(currentYear = it.currentYear - 1)
+                            it.copy(currentMonth = it.currentMonth.minusMonths(1))
                         }
                     }
-                    eventsChannel.send(HomeScreenEvent.UpdatedYear)
+                    eventsChannel.send(MonthScreenEvent.UpdatedMonth)
                 }
-                else -> Unit
             }
         }
     }

@@ -39,7 +39,8 @@ import com.aarevalo.holidays.screens.BottomTab
 
 @Composable
 fun HomeScreenRoot(
-    viewModel: HomeScreenViewModel
+    viewModel: HomeScreenViewModel,
+    navigateTo: () -> Unit
 ){
     val state by viewModel.state.collectAsState()
     val events = viewModel.events
@@ -65,6 +66,7 @@ fun HomeScreenRoot(
         onAction = { action ->
             when(action){
                 is HomeScreenAction.OnSelectedMonthView ->{
+                    navigateTo()
 
                 }
                 is HomeScreenAction.OnSelectedWeeklyView ->{
