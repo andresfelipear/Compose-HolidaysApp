@@ -3,13 +3,9 @@ package com.aarevalo.holidays.screens.main
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.rounded.Menu
@@ -36,19 +32,27 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.aarevalo.holidays.R
+import com.aarevalo.holidays.calendar.domain.model.HomeDataState
+import com.aarevalo.holidays.calendar.domain.model.HomeScreenAction
 import com.aarevalo.holidays.screens.BottomTab
+import com.aarevalo.holidays.screens.main.calendar.YearCalendarComponent
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun MainScreenRoot(){
-    MainScreen()
+fun HomeScreenRoot(
+    viewModel: HomeScreenViewModel
+){
+    val state = viewModel.state
+    val events = viewModel.events
+
+    HomeScreen()
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreen(
+fun HomeScreen(
     modifier: Modifier = Modifier,
+    state: HomeDataState = HomeDataState(),
+    onAction: (HomeScreenAction) -> Unit = {}
 ){
     val context = LocalContext.current
     var isFilterMenuExpanded by remember { mutableStateOf(false) }
@@ -71,7 +75,7 @@ fun MainScreen(
                 title = {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.padding(16.dp)
+                        modifier = Modifier.padding(horizontal = 16.dp)
                     ){
                         Text(
                             modifier = Modifier.align(Alignment.CenterVertically),
@@ -140,7 +144,10 @@ fun MainScreen(
             )
         },
         bottomBar = {
-            BottomAppBar(modifier = Modifier) {
+            BottomAppBar(
+                modifier = Modifier
+                    .padding(0.dp)
+            ) {
                 MyBottomTabsBar(
                     bottomTabs = BottomTab.BOTTOM_TABS,
                     currentBottomTab = BottomTab.Main,
@@ -149,8 +156,7 @@ fun MainScreen(
             }
         },
         content = { paddingValues ->
-            YearCalendar( modifier = Modifier.padding(paddingValues))
-
+            YearCalendarComponent( modifier = Modifier.padding(paddingValues))
         }
     )
 }
@@ -159,5 +165,5 @@ fun MainScreen(
 @Preview(showBackground = true)
 @Composable
 fun MainScreenPreview(){
-    MainScreen()
+    HomeScreen()
 }

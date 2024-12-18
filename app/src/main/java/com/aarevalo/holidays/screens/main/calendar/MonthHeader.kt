@@ -1,4 +1,4 @@
-package com.aarevalo.holidays.screens.main
+package com.aarevalo.holidays.screens.main.calendar
 
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -28,7 +28,6 @@ import java.time.YearMonth
 import java.time.format.TextStyle
 import java.util.Locale
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun MonthHeader(
     state: MonthState,
@@ -43,10 +42,10 @@ fun MonthHeader(
         modifier = if(!monthlyView){
             modifier
             .fillMaxWidth()
-            .padding(8.dp) }else{
+            .padding(horizontal = 8.dp, vertical = 2.dp) }else{
             modifier
                 .fillMaxWidth()
-                .padding(8.dp)
+                .padding(horizontal = 8.dp)
                 .padding(bottom = 16.dp)
             },
         horizontalArrangement = if (monthlyView) Arrangement.SpaceBetween else Arrangement.Center,
@@ -91,7 +90,6 @@ fun MonthHeader(
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview(showBackground = true)
 @Composable
 fun CustomMonthHeaderPreview(){

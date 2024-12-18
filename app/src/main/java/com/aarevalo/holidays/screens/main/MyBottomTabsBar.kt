@@ -16,7 +16,7 @@ fun MyBottomTabsBar(
     currentBottomTab: BottomTab,
     onTabClicked: (BottomTab) -> Unit
 ){
-    NavigationBar {
+    NavigationBar() {
         bottomTabs.forEachIndexed { _, bottomTab ->
             NavigationBarItem(
                 alwaysShowLabel = true,

@@ -1,4 +1,4 @@
-package com.aarevalo.holidays.screens.main
+package com.aarevalo.holidays.screens.main.calendar
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.fillMaxWidth

@@ -1,12 +1,12 @@
-package com.aarevalo.holidays.screens.main
+package com.aarevalo.holidays.screens.main.calendar
 
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -25,9 +25,8 @@ fun MonthCalendarItem(
     monthlyView: Boolean = true
 )
 {
-    val monthStartDate = YearMonth.of(year, month)
     val calendarState = rememberCalendarState(
-        initialMonth = monthStartDate,
+        initialMonth = YearMonth.of(year, month),
     )
 
     Column(
@@ -37,7 +36,6 @@ fun MonthCalendarItem(
     ){
         StaticCalendar(
             modifier = Modifier
-                .aspectRatio(0.7f)
                 .fillMaxWidth(),
             calendarState = calendarState,
             daysOfWeekHeader = { WeekHeader(daysOfWeek = it) },
