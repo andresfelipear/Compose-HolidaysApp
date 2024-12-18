@@ -1,4 +1,4 @@
-package com.aarevalo.holidays.screens.main
+package com.aarevalo.holidays.screens.yearCalendar
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -29,7 +29,7 @@ import java.time.Month
 fun YearCalendarComponent(
     currentYear: Int,
     modifier: Modifier = Modifier,
-    onAction: (HomeScreenAction) -> Unit){
+    onAction: (YearScreenAction) -> Unit){
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -50,7 +50,7 @@ fun YearCalendarComponent(
                     modifier = Modifier
                         .size(30.dp),
                     onClick = {
-                        onAction(HomeScreenAction.UpdateYear(increment = false))
+                        onAction(YearScreenAction.UpdateYear(increment = false))
                     }
                 ){
                     Icon(
@@ -70,7 +70,7 @@ fun YearCalendarComponent(
                     modifier = Modifier
                         .size(30.dp),
                     onClick = {
-                        onAction(HomeScreenAction.UpdateYear(increment = true))
+                        onAction(YearScreenAction.UpdateYear(increment = true))
                     }
                 ){
                     Icon(

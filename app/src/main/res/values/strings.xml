@@ -8,4 +8,5 @@
     <string name="feat_calendar_filter_by_default">Yearly</string>
     <string name="feat_calendar_year_updated">Calendar Year updated to %1$d</string>
     <string name="feat_calendar_month_updated">Month updated to %1$s</string>
+    <string name="feat_holidays_title">Holidays</string>
 </resources>

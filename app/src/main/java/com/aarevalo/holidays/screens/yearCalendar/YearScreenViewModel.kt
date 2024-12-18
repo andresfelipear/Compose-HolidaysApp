@@ -1,4 +1,4 @@
-package com.aarevalo.holidays.screens.main
+package com.aarevalo.holidays.screens.yearCalendar
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -12,17 +12,17 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeScreenViewModel @Inject constructor() : ViewModel(){
-    private val _state = MutableStateFlow(HomeDataState())
+class YearScreenViewModel @Inject constructor() : ViewModel(){
+    private val _state = MutableStateFlow(YearScreenState())
     val state = _state.asStateFlow()
 
-    private val eventsChannel = Channel<HomeScreenEvent>()
+    private val eventsChannel = Channel<YearScreenEvent>()
     val events = eventsChannel.receiveAsFlow()
 
-    fun onAction(action: HomeScreenAction) {
+    fun onAction(action: YearScreenAction) {
         viewModelScope.launch {
             when(action) {
-                is HomeScreenAction.UpdateYear -> {
+                is YearScreenAction.UpdateYear -> {
                     if (action.increment) {
                         _state.update {
                             it.copy(currentYear = it.currentYear + 1)
@@ -32,7 +32,7 @@ class HomeScreenViewModel @Inject constructor() : ViewModel(){
                             it.copy(currentYear = it.currentYear - 1)
                         }
                     }
-                    eventsChannel.send(HomeScreenEvent.UpdatedYear)
+                    eventsChannel.send(YearScreenEvent.UpdatedYear)
                 }
                 else -> Unit
             }

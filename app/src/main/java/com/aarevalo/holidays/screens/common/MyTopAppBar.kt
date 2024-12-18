@@ -32,7 +32,8 @@ import com.aarevalo.holidays.screens.main.HomeScreenAction
 @Composable
 fun MyTopAppBar(
     modifier: Modifier = Modifier,
-    onAction: (HomeScreenAction) -> Unit = {}
+    onAction: (HomeScreenAction) -> Unit = {},
+    isHolidaysTab: Boolean = false
 ){
     val context = LocalContext.current
     var isFilterMenuExpanded by remember { mutableStateOf(false) }
@@ -56,67 +57,70 @@ fun MyTopAppBar(
             ){
                 Text(
                     modifier = Modifier.align(Alignment.CenterVertically),
-                    text = filterMenuText,
+                    text = if(isHolidaysTab) stringResource(id = R.string.feat_holidays_title) else filterMenuText,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     fontWeight = FontWeight.Bold,
                 )
 
-                IconButton(
-                    modifier = Modifier.align(Alignment.CenterVertically),
-                    onClick = {
-                        isFilterMenuExpanded = true
-                    }
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.KeyboardArrowDown,
-                        contentDescription = stringResource(id = R.string.feat_calendar_filter),
-                        tint = MaterialTheme.colorScheme.onSurface
-                    )
-
-                    DropdownMenu(
-                        expanded = isFilterMenuExpanded,
-                        onDismissRequest = { isFilterMenuExpanded = false }
+                if(!isHolidaysTab){
+                    IconButton(
+                        modifier = Modifier.align(Alignment.CenterVertically),
+                        onClick = {
+                            isFilterMenuExpanded = true
+                        }
                     ) {
-                        DropdownMenuItem(
-                            text = {
-                                Text(
-                                    text = stringResource(id = R.string.feat_calendar_filter_by_year),
-                                )
-                            },
-                            onClick = {
-                                isFilterMenuExpanded = false
-                                filterMenuText = context.getString(R.string.feat_calendar_filter_by_year)
-                                onAction(HomeScreenAction.OnSelectedYearlyView)
-                            }
+                        Icon(
+                            imageVector = Icons.Default.KeyboardArrowDown,
+                            contentDescription = stringResource(id = R.string.feat_calendar_filter),
+                            tint = MaterialTheme.colorScheme.onSurface
                         )
 
-                        DropdownMenuItem(
-                            text = {
-                                Text(
-                                    text = stringResource(id = R.string.feat_calendar_filter_by_month),
-                                )
-                            },
-                            onClick = {
-                                isFilterMenuExpanded = false
-                                filterMenuText = context.getString(R.string.feat_calendar_filter_by_month)
-                                onAction(HomeScreenAction.OnSelectedMonthlyView)
-                            }
-                        )
+                        DropdownMenu(
+                            expanded = isFilterMenuExpanded,
+                            onDismissRequest = { isFilterMenuExpanded = false }
+                        ) {
+                            DropdownMenuItem(
+                                text = {
+                                    Text(
+                                        text = stringResource(id = R.string.feat_calendar_filter_by_year),
+                                    )
+                                },
+                                onClick = {
+                                    isFilterMenuExpanded = false
+                                    filterMenuText = context.getString(R.string.feat_calendar_filter_by_year)
+                                    onAction(HomeScreenAction.OnSelectedYearlyView)
+                                }
+                            )
 
-                        DropdownMenuItem(
-                            text = {
-                                Text(
-                                    text = stringResource(id = R.string.feat_calendar_filter_by_day),
-                                )
-                            },
-                            onClick = {
-                                isFilterMenuExpanded = false
-                                filterMenuText = context.getString(R.string.feat_calendar_filter_by_day)
-                                onAction(HomeScreenAction.OnSelectedWeeklyView)
-                            }
-                        )
+                            DropdownMenuItem(
+                                text = {
+                                    Text(
+                                        text = stringResource(id = R.string.feat_calendar_filter_by_month),
+                                    )
+                                },
+                                onClick = {
+                                    isFilterMenuExpanded = false
+                                    filterMenuText = context.getString(R.string.feat_calendar_filter_by_month)
+                                    onAction(HomeScreenAction.OnSelectedMonthlyView)
+                                }
+                            )
+
+                            DropdownMenuItem(
+                                text = {
+                                    Text(
+                                        text = stringResource(id = R.string.feat_calendar_filter_by_day),
+                                    )
+                                },
+                                onClick = {
+                                    isFilterMenuExpanded = false
+                                    filterMenuText = context.getString(R.string.feat_calendar_filter_by_day)
+                                    onAction(HomeScreenAction.OnSelectedWeeklyView)
+                                }
+                            )
+                        }
                     }
                 }
+
 
             }
 

@@ -7,7 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.aarevalo.holidays.screens.main.HomeScreenRoot
+import com.aarevalo.holidays.screens.yearCalendar.YearScreenRoot
 import com.aarevalo.holidays.screens.monthCalendar.MonthScreenRoot
 import kotlinx.serialization.Serializable
 
@@ -23,18 +23,12 @@ fun NavigationRoot(
             startDestination = HomeScreenDes
         ){
             composable<HomeScreenDes>{
-                HomeScreenRoot(
-                    navigateTo = {
-                        navController.navigate(MonthScreenDestination)
-                    },
+                YearScreenRoot(
                 )
             }
 
             composable<MonthScreenDestination>{
                 MonthScreenRoot(
-                    navigateBack = {
-                        navController.navigateUp()
-                    },
                 )
             }
         }

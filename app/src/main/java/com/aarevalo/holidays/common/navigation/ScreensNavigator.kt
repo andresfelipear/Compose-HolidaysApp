@@ -22,7 +22,7 @@ class ScreensNavigator {
 
     val currentBottomTab = MutableStateFlow<BottomTab?>(null)
     val currentRoute = MutableStateFlow<Route?>(null)
-    val isRooRoute = MutableStateFlow(false)
+    val isRootRoute = MutableStateFlow(false)
 
     fun setParentNavController(navController: NavController) {
         parentNavController = navController
@@ -58,7 +58,7 @@ class ScreensNavigator {
                 Pair(backStackEntry, route)
             }.collect{ (backStackEntry, route) ->
                 currentRoute.value = route
-                isRooRoute.value = route == Route.MainTab
+                isRootRoute.value = route == Route.YearTab
             }
         }
     }
