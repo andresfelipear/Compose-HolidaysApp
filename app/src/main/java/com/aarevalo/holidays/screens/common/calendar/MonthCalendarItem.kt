@@ -1,7 +1,5 @@
 package com.aarevalo.holidays.screens.common.calendar
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -18,7 +16,6 @@ import io.github.boguszpawlowski.composecalendar.rememberCalendarState
 import java.time.Month
 import java.time.YearMonth
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun MonthCalendarItem(
     month: Month,
@@ -34,7 +31,7 @@ fun MonthCalendarItem(
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
-            .padding(4.dp)
+            .padding(horizontal = 2.dp, vertical = 0.dp)
     ){
         StaticCalendar(
             modifier = Modifier
@@ -53,8 +50,6 @@ fun MonthCalendarItem(
     }
 }
 
-
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview(showBackground = true)
 @Composable
 fun MonthCalendarItemPreview()

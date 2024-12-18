@@ -1,7 +1,5 @@
 package com.aarevalo.holidays.screens.main
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,24 +18,18 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.aarevalo.holidays.screens.common.calendar.MonthCalendarItem
-import java.time.LocalDate
 import java.time.Month
 
 @Composable
 fun YearCalendarComponent(
-    modifier: Modifier = Modifier
-){
-    var currentYear by remember { mutableStateOf(LocalDate.now().year) }
-
+    currentYear: Int,
+    modifier: Modifier = Modifier,
+    onAction: (HomeScreenAction) -> Unit){
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -58,7 +50,7 @@ fun YearCalendarComponent(
                     modifier = Modifier
                         .size(30.dp),
                     onClick = {
-                        currentYear--
+                        onAction(HomeScreenAction.UpdateYear(increment = false))
                     }
                 ){
                     Icon(
@@ -78,7 +70,7 @@ fun YearCalendarComponent(
                     modifier = Modifier
                         .size(30.dp),
                     onClick = {
-                        currentYear++
+                        onAction(HomeScreenAction.UpdateYear(increment = true))
                     }
                 ){
                     Icon(
@@ -119,9 +111,11 @@ fun YearCalendarComponent(
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview(showBackground = true)
 @Composable
 fun CalendarPreview(){
-    YearCalendarComponent()
+    YearCalendarComponent(
+        currentYear = 2023,
+        onAction = {}
+    )
 }

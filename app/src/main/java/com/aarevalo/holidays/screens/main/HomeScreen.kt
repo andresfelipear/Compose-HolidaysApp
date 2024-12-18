@@ -1,12 +1,12 @@
 package com.aarevalo.holidays.screens.main
 
-import android.os.Build
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.rounded.Menu
@@ -36,7 +36,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.aarevalo.holidays.R
-import com.aarevalo.holidays.screens.BottomTab
+import com.aarevalo.holidays.screens.common.BottomTab
 
 @Composable
 fun HomeScreenRoot(
@@ -107,7 +107,7 @@ fun HomeScreen(
                 title = {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.padding(horizontal = 16.dp)
+                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 0.dp)
                     ){
                         Text(
                             modifier = Modifier.align(Alignment.CenterVertically),
@@ -189,12 +189,15 @@ fun HomeScreen(
             }
         },
         content = { paddingValues ->
-            YearCalendarComponent( modifier = Modifier.padding(paddingValues))
+            YearCalendarComponent(
+                currentYear = state.currentYear,
+                modifier = Modifier.padding(paddingValues),
+                onAction = onAction
+            )
         }
     )
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview(showBackground = true)
 @Composable
 fun MainScreenPreview(){

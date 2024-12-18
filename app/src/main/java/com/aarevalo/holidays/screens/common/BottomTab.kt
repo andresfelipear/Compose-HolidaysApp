@@ -1,4 +1,4 @@
-package com.aarevalo.holidays.screens
+package com.aarevalo.holidays.screens.common
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.List

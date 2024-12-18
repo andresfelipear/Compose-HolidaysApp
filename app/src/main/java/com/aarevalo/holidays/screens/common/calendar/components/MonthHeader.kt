@@ -3,6 +3,7 @@ package com.aarevalo.holidays.screens.common.calendar.components
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
@@ -32,7 +33,7 @@ fun MonthHeader(
     modifier: Modifier = Modifier,
     monthTitleFontSize: androidx.compose.ui.unit.TextUnit = 12.sp,
     monthTitleColor: Color = Color.Black,
-    arrowColor: Color = MaterialTheme.colorScheme.primary,
+    arrowColor: Color = MaterialTheme.colorScheme.error,
     arrowSize: androidx.compose.ui.unit.Dp = 20.dp,
     monthlyView: Boolean = true
 ){
@@ -40,10 +41,10 @@ fun MonthHeader(
         modifier = if(!monthlyView){
             modifier
             .fillMaxWidth()
-            .padding(horizontal = 8.dp, vertical = 2.dp) }else{
+            .padding(horizontal = 8.dp, vertical = 0.dp)}else{
             modifier
                 .fillMaxWidth()
-                .padding(horizontal = 8.dp)
+                .padding(8.dp)
                 .padding(bottom = 16.dp)
             },
         horizontalArrangement = if (monthlyView) Arrangement.SpaceBetween else Arrangement.Center,
@@ -66,6 +67,7 @@ fun MonthHeader(
         }
 
         Text(
+            modifier = Modifier.height(20.dp),
             text = state.currentMonth.month.getDisplayName(TextStyle.SHORT,Locale.getDefault()),
             fontSize = monthTitleFontSize,
             color = monthTitleColor,

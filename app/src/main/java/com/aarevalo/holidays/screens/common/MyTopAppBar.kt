@@ -86,6 +86,7 @@ fun MyTopAppBar(
                             onClick = {
                                 isFilterMenuExpanded = false
                                 filterMenuText = context.getString(R.string.feat_calendar_filter_by_year)
+                                onAction(HomeScreenAction.OnSelectedYearlyView)
                             }
                         )
 
@@ -98,6 +99,7 @@ fun MyTopAppBar(
                             onClick = {
                                 isFilterMenuExpanded = false
                                 filterMenuText = context.getString(R.string.feat_calendar_filter_by_month)
+                                onAction(HomeScreenAction.OnSelectedMonthlyView)
                             }
                         )
 
@@ -110,6 +112,7 @@ fun MyTopAppBar(
                             onClick = {
                                 isFilterMenuExpanded = false
                                 filterMenuText = context.getString(R.string.feat_calendar_filter_by_day)
+                                onAction(HomeScreenAction.OnSelectedWeeklyView)
                             }
                         )
                     }
