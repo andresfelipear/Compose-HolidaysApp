@@ -1,6 +1,7 @@
 package com.aarevalo.holidays.screens.main
 
 import android.os.Build
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
@@ -20,6 +21,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -32,19 +35,45 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.aarevalo.holidays.R
-import com.aarevalo.holidays.calendar.domain.model.HomeDataState
-import com.aarevalo.holidays.calendar.domain.model.HomeScreenAction
 import com.aarevalo.holidays.screens.BottomTab
-import com.aarevalo.holidays.screens.main.calendar.YearCalendarComponent
 
 @Composable
 fun HomeScreenRoot(
     viewModel: HomeScreenViewModel
 ){
-    val state = viewModel.state
+    val state by viewModel.state.collectAsState()
     val events = viewModel.events
 
-    HomeScreen()
+    val context = LocalContext.current
+
+    LaunchedEffect(events){
+        events.collect { event ->
+            when(event){
+                is HomeScreenEvent.UpdatedYear -> {
+                    Toast.makeText(
+                        context,
+                        context.getString(R.string.feat_calendar_year_updated, state.currentYear),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        }
+    }
+
+    HomeScreen(
+        state = state,
+        onAction = { action ->
+            when(action){
+                is HomeScreenAction.OnSelectedMonthView ->{
+
+                }
+                is HomeScreenAction.OnSelectedWeeklyView ->{
+
+                }
+                else -> viewModel.onAction(action)
+            }
+        }
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

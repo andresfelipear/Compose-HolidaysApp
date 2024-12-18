@@ -1,5 +1,6 @@
-package com.aarevalo.holidays.calendar.domain.model
+package com.aarevalo.holidays.screens.main
 
+import com.aarevalo.holidays.calendar.domain.model.MonthCalendar
 import java.time.LocalDate
 import java.time.Month
 import java.time.YearMonth
@@ -12,9 +13,4 @@ data class HomeDataState(
         )
     },
     val currentMonth: YearMonth = YearMonth.now(),
-    val isLoading: Boolean = false,
-    val error: String? = null
-
-
-
 )

@@ -1,4 +1,4 @@
-package com.aarevalo.holidays.screens.main.calendar
+package com.aarevalo.holidays.screens.common.calendar.components
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Row

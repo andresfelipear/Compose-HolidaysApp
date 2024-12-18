@@ -1,4 +1,4 @@
-package com.aarevalo.holidays.screens.main.calendar
+package com.aarevalo.holidays.screens.main
 
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -28,10 +28,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.aarevalo.holidays.screens.common.calendar.MonthCalendarItem
 import java.time.LocalDate
 import java.time.Month
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun YearCalendarComponent(
     modifier: Modifier = Modifier
