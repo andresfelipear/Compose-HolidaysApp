@@ -26,11 +26,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.aarevalo.holidays.R
+import com.aarevalo.holidays.screens.main.HomeScreenAction
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MyTopAppBar(
     modifier: Modifier = Modifier,
+    onAction: (HomeScreenAction) -> Unit = {}
 ){
     val context = LocalContext.current
     var isFilterMenuExpanded by remember { mutableStateOf(false) }

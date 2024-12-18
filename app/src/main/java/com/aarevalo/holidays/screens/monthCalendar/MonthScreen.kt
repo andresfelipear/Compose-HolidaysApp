@@ -9,14 +9,15 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.aarevalo.holidays.R
 import com.aarevalo.holidays.screens.common.calendar.MonthCalendarItem
 
 @Composable
 fun MonthScreenRoot(
     navigateBack: () -> Boolean,
-    viewModel: MonthScreenViewModel
 ){
+    val viewModel: MonthScreenViewModel = hiltViewModel()
     val state by viewModel.state.collectAsState()
     val events = viewModel.events
 

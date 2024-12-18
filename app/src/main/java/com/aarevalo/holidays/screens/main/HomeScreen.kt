@@ -34,14 +34,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.aarevalo.holidays.R
 import com.aarevalo.holidays.screens.BottomTab
 
 @Composable
 fun HomeScreenRoot(
-    viewModel: HomeScreenViewModel,
     navigateTo: () -> Unit
 ){
+    val viewModel : HomeScreenViewModel = hiltViewModel()
     val state by viewModel.state.collectAsState()
     val events = viewModel.events
 
@@ -65,7 +66,7 @@ fun HomeScreenRoot(
         state = state,
         onAction = { action ->
             when(action){
-                is HomeScreenAction.OnSelectedMonthView ->{
+                is HomeScreenAction.OnSelectedMonthlyView ->{
                     navigateTo()
 
                 }
@@ -152,6 +153,7 @@ fun HomeScreen(
                                     onClick = {
                                         isFilterMenuExpanded = false
                                         filterMenuText = context.getString(R.string.feat_calendar_filter_by_month)
+                                        onAction(HomeScreenAction.OnSelectedMonthlyView)
                                     }
                                 )
 

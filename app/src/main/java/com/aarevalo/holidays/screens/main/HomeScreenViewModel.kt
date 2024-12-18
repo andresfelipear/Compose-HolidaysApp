@@ -9,9 +9,10 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
-class HomeScreenViewModel: ViewModel() {
+class HomeScreenViewModel @Inject constructor() : ViewModel(){
     private val _state = MutableStateFlow(HomeDataState())
     val state = _state.asStateFlow()
 

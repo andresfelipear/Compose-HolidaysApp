@@ -9,9 +9,10 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
-class MonthScreenViewModel: ViewModel() {
+class MonthScreenViewModel @Inject constructor() : ViewModel() {
 
     private val _state = MutableStateFlow(MonthScreenState())
     val state = _state.asStateFlow()
@@ -25,11 +26,11 @@ class MonthScreenViewModel: ViewModel() {
                 is MonthScreenAction.UpdateMonth -> {
                     if (action.increment) {
                         _state.update {
-                            it.copy(currentMonth = it.currentMonth.plusMonths(1))
+                            it.copy(currentMonth = it.currentMonth.plus(1))
                         }
                     } else{
                         _state.update {
-                            it.copy(currentMonth = it.currentMonth.minusMonths(1))
+                            it.copy(currentMonth = it.currentMonth.minus(1))
                         }
                     }
                     eventsChannel.send(MonthScreenEvent.UpdatedMonth)

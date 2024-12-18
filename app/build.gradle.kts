@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.room)
     alias(libs.plugins.dagger.hilt)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 room {
@@ -62,25 +63,24 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.ui.text.google.fonts)
 
-    //TODO: 3.5 Agregar libreria fuentes google
+    // Google libraries
     implementation(libs.androidx.ui.text.google.fonts)
     implementation(libs.androidx.navigation.runtime.ktx)
     implementation(libs.navigation.compose)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    //Librerias Room
+    // Room Libraries
     implementation(libs.room.ktx)
     implementation(libs.room.runtime)
     ksp(libs.room.compiler)
 
-    //Librerias Dagger Hilt
+    // Hilt, Dagger Libraries
     implementation(libs.dagger.hilt.navigation.compose)
     implementation(libs.dagger.hilt)
     ksp(libs.dagger.hilt.compiler)
 
-    //Libreria Serializacion
-
+    // Serialized Libraries
     implementation(libs.kotlinx.serialization.json)
 
     // Compose Calendar
