@@ -23,6 +23,7 @@ import com.aarevalo.holidays.common.navigation.ScreensNavigator
 import com.aarevalo.holidays.screens.common.BottomTab
 import com.aarevalo.holidays.screens.common.MyBottomTabsBar
 import com.aarevalo.holidays.screens.common.MyTopAppBar
+import com.aarevalo.holidays.screens.common.calendar.CalendarScreenViewModel
 import com.aarevalo.holidays.screens.holidays.HolidaysScreen
 import com.aarevalo.holidays.screens.yearCalendar.YearScreenRoot
 import com.aarevalo.holidays.screens.monthCalendar.MonthScreenRoot
@@ -90,6 +91,8 @@ fun HomeScreen(
     val parentNavController = rememberNavController()
     screenNavigator.setParentNavController(parentNavController)
 
+    val viewModel: CalendarScreenViewModel = hiltViewModel()
+
     Surface(
         modifier = Modifier
             .padding(padding)
@@ -111,10 +114,10 @@ fun HomeScreen(
                     startDestination = Route.YearTab.routeName
                 ){
                     composable(route = Route.YearTab.routeName){
-                        YearScreenRoot()
+                        YearScreenRoot(viewModel = viewModel)
                     }
                     composable(route = Route.MonthTab.routeName){
-                        MonthScreenRoot()
+                        MonthScreenRoot(viewModel = viewModel)
                     }
                 }
             }

@@ -10,11 +10,17 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.aarevalo.holidays.R
+import com.aarevalo.holidays.screens.common.calendar.CalendarScreenAction
+import com.aarevalo.holidays.screens.common.calendar.CalendarScreenEvent
+import com.aarevalo.holidays.screens.common.calendar.CalendarScreenState
+import com.aarevalo.holidays.screens.common.calendar.CalendarScreenViewModel
+import java.time.YearMonth
 
 @Composable
-fun YearScreenRoot()
+fun YearScreenRoot(
+    viewModel: CalendarScreenViewModel
+)
 {
-    val viewModel : YearScreenViewModel = hiltViewModel()
     val state by viewModel.state.collectAsState()
     val events = viewModel.events
 
@@ -23,13 +29,14 @@ fun YearScreenRoot()
     LaunchedEffect(events){
         events.collect { event ->
             when(event){
-                is YearScreenEvent.UpdatedYear -> {
+                is CalendarScreenEvent.UpdatedYear -> {
                     Toast.makeText(
                         context,
                         context.getString(R.string.feat_calendar_year_updated, state.currentYear),
                         Toast.LENGTH_SHORT
                     ).show()
                 }
+                else -> Unit
             }
         }
     }
@@ -38,7 +45,7 @@ fun YearScreenRoot()
         state = state,
         onAction = { action ->
             when(action){
-                is YearScreenAction.UpdateYear -> {
+                is CalendarScreenAction.UpdateYear -> {
                     viewModel.onAction(action)
                 }
             }
@@ -49,10 +56,11 @@ fun YearScreenRoot()
 @Composable
 fun YearScreen(
     modifier: Modifier = Modifier,
-    state: YearScreenState = YearScreenState(),
-    onAction: (YearScreenAction) -> Unit = {}
+    state: CalendarScreenState,
+    onAction: (CalendarScreenAction) -> Unit = {}
 ){
     YearCalendarComponent(
+        modifier = modifier,
         currentYear = state.currentYear,
         onAction = onAction
     )
@@ -61,5 +69,5 @@ fun YearScreen(
 @Preview(showBackground = true)
 @Composable
 fun MainScreenPreview(){
-    YearScreen()
+    YearScreen(state = CalendarScreenState(currentYear = 2023, currentMonth = YearMonth.now()))
 }

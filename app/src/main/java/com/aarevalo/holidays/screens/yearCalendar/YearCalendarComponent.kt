@@ -22,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.aarevalo.holidays.screens.common.calendar.CalendarScreenAction
 import com.aarevalo.holidays.screens.common.calendar.MonthCalendarItem
 import java.time.Month
 
@@ -29,87 +30,104 @@ import java.time.Month
 fun YearCalendarComponent(
     currentYear: Int,
     modifier: Modifier = Modifier,
-    onAction: (YearScreenAction) -> Unit){
+    onAction: (CalendarScreenAction) -> Unit
+) {
     Box(
         modifier = modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState()),
-    ){
+    ) {
         Column(
             modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally,
-        ){
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 8.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ){
-                IconButton(
-                    modifier = Modifier
-                        .size(30.dp),
-                    onClick = {
-                        onAction(YearScreenAction.UpdateYear(increment = false))
-                    }
-                ){
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
-                        contentDescription = "Previous Year",
-                        tint = MaterialTheme.colorScheme.error
-                    )
-                }
+        ) {
+            YearNavigationRow(
+                currentYear = currentYear,
+                onAction = onAction
+            )
 
-                Text(
-                    text = currentYear.toString(),
-                    style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.onSurface,
-                )
+            YearMonthsGrid(
+                currentYear = currentYear
+            )
+        }
+    }
+}
 
-                IconButton(
-                    modifier = Modifier
-                        .size(30.dp),
-                    onClick = {
-                        onAction(YearScreenAction.UpdateYear(increment = true))
-                    }
-                ){
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
-                        contentDescription = "Next Year",
-                        tint = MaterialTheme.colorScheme.error
-                    )
-                }
+@Composable
+fun YearNavigationRow(
+    currentYear: Int,
+    onAction: (CalendarScreenAction) -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 8.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        IconButton(
+            modifier = Modifier.size(30.dp),
+            onClick = {
+                onAction(CalendarScreenAction.UpdateYear(increment = false))
             }
+        ) {
+            Icon(
+                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
+                contentDescription = "Previous Year",
+                tint = MaterialTheme.colorScheme.error
+            )
+        }
 
-            Column(
-                modifier = Modifier
-                    .padding(horizontal = 8.dp)
-                    .fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ){
-                for(row in 0 until 4){
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceEvenly,
-                    ){
-                        for(col in 0 until 3){
-                            val montIndex = row * 3 + col
-                            if(montIndex < Month.entries.size){
-                                MonthCalendarItem(
-                                    month = Month.entries[montIndex],
-                                    year = currentYear,
-                                    modifier = Modifier.weight(1f),
-                                    monthlyView = false
-                                )
-                            }
-                        }
+        Text(
+            text = currentYear.toString(),
+            style = MaterialTheme.typography.titleMedium,
+            color = MaterialTheme.colorScheme.onSurface,
+        )
 
+        IconButton(
+            modifier = Modifier.size(30.dp),
+            onClick = {
+                onAction(CalendarScreenAction.UpdateYear(increment = true))
+            }
+        ) {
+            Icon(
+                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                contentDescription = "Next Year",
+                tint = MaterialTheme.colorScheme.error
+            )
+        }
+    }
+}
+
+@Composable
+fun YearMonthsGrid(currentYear: Int) {
+    Column(
+        modifier = Modifier
+            .padding(horizontal = 8.dp)
+            .fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        for (row in 0 until 4) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly,
+            ) {
+                for (col in 0 until 3) {
+                    val monthIndex = row * 3 + col
+                    if (monthIndex < Month.entries.size) {
+                        MonthCalendarItem(
+                            month = Month.entries[monthIndex],
+                            year = currentYear,
+                            modifier = Modifier.weight(1f),
+                            monthlyView = false
+                        )
                     }
                 }
             }
         }
     }
 }
+
 
 @Preview(showBackground = true)
 @Composable

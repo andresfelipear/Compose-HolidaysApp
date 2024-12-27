@@ -24,9 +24,9 @@ fun MonthCalendarItem(
     monthlyView: Boolean = true
 )
 {
-    val calendarState = rememberCalendarState(
-        initialMonth = YearMonth.of(year, month),
-    )
+    val calendarState = rememberCalendarState()
+
+    calendarState.monthState.currentMonth = YearMonth.of(year, month)
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
