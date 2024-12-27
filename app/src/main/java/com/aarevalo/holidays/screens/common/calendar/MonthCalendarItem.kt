@@ -4,6 +4,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -24,9 +26,16 @@ fun MonthCalendarItem(
     monthlyView: Boolean = true
 )
 {
-    val calendarState = rememberCalendarState()
+    val initialMonth = YearMonth.of(year, month)
+    val calendarState = rememberCalendarState(
+        initialMonth = initialMonth
+    )
 
-    calendarState.monthState.currentMonth = YearMonth.of(year, month)
+    SideEffect{
+        if(calendarState.monthState.currentMonth.year != year){
+            calendarState.monthState.currentMonth = YearMonth.of(year, month)
+        }
+    }
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -49,6 +58,7 @@ fun MonthCalendarItem(
         )
     }
 }
+
 
 @Preview(showBackground = true)
 @Composable

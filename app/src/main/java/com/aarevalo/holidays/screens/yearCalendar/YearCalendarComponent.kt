@@ -18,6 +18,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -101,6 +102,8 @@ fun YearNavigationRow(
 
 @Composable
 fun YearMonthsGrid(currentYear: Int) {
+    val monthIndices = remember { Month.entries.toTypedArray() }
+
     Column(
         modifier = Modifier
             .padding(horizontal = 8.dp)
@@ -114,7 +117,7 @@ fun YearMonthsGrid(currentYear: Int) {
             ) {
                 for (col in 0 until 3) {
                     val monthIndex = row * 3 + col
-                    if (monthIndex < Month.entries.size) {
+                    if (monthIndex < monthIndices.size) {
                         MonthCalendarItem(
                             month = Month.entries[monthIndex],
                             year = currentYear,
