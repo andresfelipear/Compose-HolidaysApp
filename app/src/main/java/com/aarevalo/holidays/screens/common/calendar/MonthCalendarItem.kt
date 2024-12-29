@@ -4,8 +4,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -15,6 +17,8 @@ import com.aarevalo.holidays.screens.common.calendar.components.MonthHeader
 import com.aarevalo.holidays.screens.common.calendar.components.WeekHeader
 import io.github.boguszpawlowski.composecalendar.StaticCalendar
 import io.github.boguszpawlowski.composecalendar.rememberCalendarState
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.time.Month
 import java.time.YearMonth
 
@@ -26,16 +30,25 @@ fun MonthCalendarItem(
     monthlyView: Boolean = true
 )
 {
+    val scope = rememberCoroutineScope()
     val initialMonth = YearMonth.of(year, month)
     val calendarState = rememberCalendarState(
         initialMonth = initialMonth
     )
 
-    SideEffect{
-        if(calendarState.monthState.currentMonth.year != year){
+    LaunchedEffect(year) {
+        scope.launch {
+            // Add a small delay to stagger the updates
+            delay(month.value.toLong() * 20) // 20ms delay between each month
             calendarState.monthState.currentMonth = YearMonth.of(year, month)
         }
     }
+
+//    SideEffect{
+//        if(calendarState.monthState.currentMonth.year != year){
+//            calendarState.monthState.currentMonth = YearMonth.of(year, month)
+//        }
+//    }
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
