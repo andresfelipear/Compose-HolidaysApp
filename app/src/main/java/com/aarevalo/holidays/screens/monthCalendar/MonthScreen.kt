@@ -2,7 +2,6 @@ package com.aarevalo.holidays.screens.monthCalendar
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -11,20 +10,16 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.aarevalo.holidays.R
 import com.aarevalo.holidays.screens.common.calendar.CalendarScreenAction
 import com.aarevalo.holidays.screens.common.calendar.CalendarScreenEvent
 import com.aarevalo.holidays.screens.common.calendar.CalendarScreenState
 import com.aarevalo.holidays.screens.common.calendar.CalendarScreenViewModel
 import com.aarevalo.holidays.screens.common.calendar.components.DayContent
+import com.aarevalo.holidays.screens.common.calendar.components.MonthHeader
 import com.aarevalo.holidays.screens.common.calendar.components.WeekHeader
 import io.github.boguszpawlowski.composecalendar.StaticCalendar
-import io.github.boguszpawlowski.composecalendar.day.DayState
-import io.github.boguszpawlowski.composecalendar.day.DefaultDay
 import io.github.boguszpawlowski.composecalendar.rememberCalendarState
-import io.github.boguszpawlowski.composecalendar.selection.EmptySelectionState
-import java.time.Month
 import java.time.YearMonth
 
 @Composable
@@ -40,7 +35,7 @@ fun MonthScreenRoot(viewModel: CalendarScreenViewModel){
                 is CalendarScreenEvent.UpdatedMonth -> {
                     Toast.makeText(context,
                         context.getString(R.string.feat_calendar_month_updated,
-                            state.currentMonth),
+                            state.currentMonth.month.toString()),
                         Toast.LENGTH_SHORT)
                         .show()
                 }
@@ -78,7 +73,8 @@ fun MonthViewScreen(
             modifier = Modifier
                 .fillMaxSize(),
             calendarState = calendarState,
-            daysOfWeekHeader = { WeekHeader(daysOfWeek = it) },
+            monthHeader = { MonthHeader(state = it, onAction = onAction) },
+            daysOfWeekHeader = { WeekHeader(daysOfWeek = it, ) },
             dayContent = { DayContent(state = it) },
         )
     }

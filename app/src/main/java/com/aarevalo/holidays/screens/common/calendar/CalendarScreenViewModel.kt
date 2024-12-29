@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.LocalDate
+import java.time.Month
 import java.time.YearMonth
 import javax.inject.Inject
 
@@ -41,17 +42,29 @@ class CalendarScreenViewModel @Inject constructor() : ViewModel(){
 
                 is CalendarScreenAction.UpdateMonth -> {
                     if (action.increment) {
-                        _state.update {
-                            it.copy(currentMonth = it.currentMonth.plusMonths(1))
+                        if(_state.value.currentMonth.monthValue == Month.DECEMBER.value){
+                            _state.update {
+                             it.copy(currentMonth = it.currentMonth.plusMonths(1), currentYear = it.currentYear + 1)
+                            }
+                        }else{
+                            _state.update {
+                                it.copy(currentMonth = it.currentMonth.plusMonths(1))
+                            }
                         }
                     } else{
-                        _state.update {
-                            it.copy(currentMonth = it.currentMonth.minusMonths(1))
+                        if(_state.value.currentMonth.monthValue == Month.JANUARY.value){
+                            _state.update {
+                                it.copy(currentMonth = it.currentMonth.minusMonths(1), currentYear = it.currentYear - 1)
+                            }
+                        }
+                        else{
+                            _state.update {
+                                it.copy(currentMonth = it.currentMonth.minusMonths(1))
+                            }
                         }
                     }
                     eventsChannel.send(CalendarScreenEvent.UpdatedMonth)
                 }
-
                 else -> Unit
             }
         }
