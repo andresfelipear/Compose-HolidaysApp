@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import java.time.DayOfWeek
 import java.time.Month
 import java.time.YearMonth
 import java.time.format.TextStyle
@@ -81,7 +82,7 @@ fun SimpleMonthCalendar(
                     modifier = Modifier.weight(1f),
                     style = MaterialTheme.typography.labelSmall,
                     textAlign = TextAlign.Center,
-                    color = MaterialTheme.colorScheme.error
+                    color = MaterialTheme.colorScheme.primary
                 )
             }
         }
@@ -90,35 +91,44 @@ fun SimpleMonthCalendar(
             Row(modifier = Modifier.fillMaxWidth()){
                 for(dayOfWeek in 0 until 7) {
                     val day = week * 7 + dayOfWeek - firstDayOfWeek + 1
+                    val currentDay = when {
+                        day < 1 -> {
+                            prevMonth.atDay(prevMonthDays + day)
+                        }
+                        day in 1..daysInMonth -> {
+                            yearMonth.atDay(day)
+                        }
+                        else -> {
+                            nextMonth.atDay(day - daysInMonth)
+                        }
+                    }
                     Box(
                         modifier = Modifier.weight(1f).aspectRatio(1f),
                         contentAlignment = Alignment.Center
                     ){
-                        when {
-                            day < 1 -> {
-                                Text(
-                                    text = (prevMonthDays + day).toString(),
-                                    style = MaterialTheme.typography.bodySmall,
-                                    textAlign = TextAlign.Center,
-                                    color = MaterialTheme.colorScheme.outlineVariant
-                                )
-                            }
-                            day in 1..daysInMonth -> {
-                                Text(
-                                    text = day.toString(),
-                                    style = MaterialTheme.typography.bodySmall,
-                                    textAlign = TextAlign.Center
-                                )
+                        val dayText = currentDay.dayOfMonth.toString()
+                        val dayColor = when {
+                            day in 1..daysInMonth ->{
+                                if(currentDay.dayOfWeek == DayOfWeek.SUNDAY){
+                                    MaterialTheme.colorScheme.primary
+                                }else{
+                                    MaterialTheme.colorScheme.onSurface
+                                }
                             }
                             else -> {
-                                Text(
-                                    text = (day - daysInMonth).toString(),
-                                    style = MaterialTheme.typography.bodySmall,
-                                    textAlign = TextAlign.Center,
-                                    color = MaterialTheme.colorScheme.outlineVariant
-                                )
+                                if(currentDay.dayOfWeek == DayOfWeek.SUNDAY){
+                                    MaterialTheme.colorScheme.primary
+                                }else{
+                                    MaterialTheme.colorScheme.secondary
+                                }
                             }
                         }
+                        Text(
+                            text = dayText,
+                            style = MaterialTheme.typography.bodySmall,
+                            textAlign = TextAlign.Center,
+                            color = dayColor
+                        )
                     }
                 }
             }
