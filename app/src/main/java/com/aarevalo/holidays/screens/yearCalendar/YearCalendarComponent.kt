@@ -24,7 +24,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.aarevalo.holidays.screens.common.calendar.CalendarScreenAction
-import com.aarevalo.holidays.screens.common.calendar.MonthCalendarItem
 import java.time.Month
 
 @Composable
@@ -118,11 +117,10 @@ fun YearMonthsGrid(currentYear: Int) {
                 for (col in 0 until 3) {
                     val monthIndex = row * 3 + col
                     if (monthIndex < monthIndices.size) {
-                        MonthCalendarItem(
-                            month = Month.entries[monthIndex],
+                        CustomMonthCalendar(
                             year = currentYear,
-                            modifier = Modifier.weight(1f),
-                            monthlyView = false
+                            month = monthIndices[monthIndex],
+                            modifier = Modifier.weight(1f)
                         )
                     }
                 }

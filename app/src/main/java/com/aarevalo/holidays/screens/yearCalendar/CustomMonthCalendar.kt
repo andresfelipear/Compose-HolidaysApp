@@ -1,6 +1,5 @@
 package com.aarevalo.holidays.screens.yearCalendar
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -22,36 +21,7 @@ import java.time.format.TextStyle
 import java.util.Locale
 
 @Composable
-fun YearCalendar(
-    currentYear: Int,
-    modifier: Modifier = Modifier,
-){
-    Column(
-        modifier = modifier.fillMaxWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ){
-        for(row in 0..3){
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceEvenly,
-            ){
-                for(col in 0..2){
-                    val monthIndex = row * 3 + col
-                    if(monthIndex < 12){
-                        SimpleMonthCalendar(
-                            year = currentYear,
-                            month = Month.of(monthIndex + 1),
-                            modifier = Modifier.weight(1f)
-                        )
-                    }
-                }
-            }
-        }
-    }
-}
-
-@Composable
-fun SimpleMonthCalendar(
+fun CustomMonthCalendar(
     year: Int,
     month: Month,
     modifier: Modifier = Modifier
@@ -76,13 +46,13 @@ fun SimpleMonthCalendar(
 
         Row(modifier = Modifier.fillMaxWidth()){
             val daysOfWeek = listOf("S", "M", "T", "W", "T", "F", "S")
-            daysOfWeek.forEach { day ->
+            daysOfWeek.forEachIndexed { index, day ->
                 Text(
                     text = day,
                     modifier = Modifier.weight(1f),
                     style = MaterialTheme.typography.labelSmall,
                     textAlign = TextAlign.Center,
-                    color = MaterialTheme.colorScheme.primary
+                    color = if(index == 0) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurface
                 )
             }
         }
@@ -110,16 +80,16 @@ fun SimpleMonthCalendar(
                         val dayColor = when {
                             day in 1..daysInMonth ->{
                                 if(currentDay.dayOfWeek == DayOfWeek.SUNDAY){
-                                    MaterialTheme.colorScheme.primary
+                                    MaterialTheme.colorScheme.error
                                 }else{
                                     MaterialTheme.colorScheme.onSurface
                                 }
                             }
                             else -> {
                                 if(currentDay.dayOfWeek == DayOfWeek.SUNDAY){
-                                    MaterialTheme.colorScheme.primary
+                                    MaterialTheme.colorScheme.errorContainer
                                 }else{
-                                    MaterialTheme.colorScheme.secondary
+                                    MaterialTheme.colorScheme.outlineVariant
                                 }
                             }
                         }
@@ -138,6 +108,9 @@ fun SimpleMonthCalendar(
 
 @Preview(showBackground = true)
 @Composable
-fun YearCalendarPreview(){
-    YearCalendar(currentYear = 2024)
+fun CustomMonthCalendarPreview(){
+    CustomMonthCalendar(
+        year = 2023,
+        month = Month.JANUARY
+    )
 }
