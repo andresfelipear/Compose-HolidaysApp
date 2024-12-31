@@ -10,12 +10,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.aarevalo.holidays.screens.common.calendar.CalendarScreenAction
 import com.aarevalo.holidays.screens.common.calendar.CalendarScreenState
 import com.aarevalo.holidays.screens.common.calendar.CalendarScreenViewModel
+import com.aarevalo.holidays.screens.weekCalendar.components.WeekHeaderWeekCalendar
 import io.github.boguszpawlowski.composecalendar.WeekCalendar
 import io.github.boguszpawlowski.composecalendar.rememberWeekCalendarState
 import io.github.boguszpawlowski.composecalendar.week.Week
-import java.time.LocalDate
 import java.time.YearMonth
-import java.time.temporal.WeekFields
 
 @Composable
 fun WeeklyCalendarScreenRoot(
@@ -28,7 +27,9 @@ fun WeeklyCalendarScreenRoot(
         state = state,
         onAction = { action ->
             when(action){
-
+                is CalendarScreenAction.UpdateWeek -> {
+                    viewModel.onAction(action)
+                }
             }
         }
     )
@@ -47,8 +48,8 @@ fun WeeklyCalendarScreen(
         calendarState.weekState.currentWeek = state.currentWeek
         WeekCalendar(
             calendarState = calendarState,
+            weekHeader = { WeekHeaderWeekCalendar(state = it, onAction = onAction) },
         )
-
     }
 }
 

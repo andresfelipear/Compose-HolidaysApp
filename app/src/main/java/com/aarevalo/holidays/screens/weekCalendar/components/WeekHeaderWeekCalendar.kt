@@ -1,4 +1,4 @@
-package com.aarevalo.holidays.screens.common.calendar.components
+package com.aarevalo.holidays.screens.weekCalendar.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -14,54 +14,42 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.aarevalo.holidays.screens.common.calendar.CalendarScreenAction
-import io.github.boguszpawlowski.composecalendar.header.MonthState
-import java.time.Month
-import java.time.YearMonth
+import io.github.boguszpawlowski.composecalendar.header.WeekState
 import java.time.format.TextStyle
 import java.util.Locale
 
 @Composable
-fun MonthHeader(
-    state: MonthState,
+fun WeekHeaderWeekCalendar(
+    state: WeekState,
     modifier: Modifier = Modifier,
-    arrowColor: Color = MaterialTheme.colorScheme.error,
-    onAction: (CalendarScreenAction) -> Unit,
+    onAction: (CalendarScreenAction) -> Unit
 ) {
+
     Row(modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceAround,
         verticalAlignment = Alignment.CenterVertically) {
 
         IconButton(onClick = {
-            onAction(CalendarScreenAction.UpdateMonth(increment = false))
+            onAction(CalendarScreenAction.UpdateWeek(increment = false))
         }, modifier = Modifier.size(24.dp)) {
             Icon(imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
-                contentDescription = "Previous Month",
-                tint = arrowColor)
+                contentDescription = "Previous Week",
+                tint = MaterialTheme.colorScheme.error)
         }
 
         Text(text = "${
-            state.currentMonth.month.getDisplayName(TextStyle.FULL,
+            state.currentWeek.yearMonth.month.getDisplayName(TextStyle.FULL,
                 Locale.getDefault())
-        } ${state.currentMonth.year}", style = MaterialTheme.typography.headlineLarge)
+        } ${state.currentWeek.yearMonth.year}", style = MaterialTheme.typography.headlineLarge)
 
         IconButton(onClick = {
-            onAction(CalendarScreenAction.UpdateMonth(increment = true))
+            onAction(CalendarScreenAction.UpdateWeek(increment = true))
         }, modifier = Modifier.size(24.dp)) {
             Icon(imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
-                contentDescription = "Next Month",
-                tint = arrowColor)
+                contentDescription = "Next Week",
+                tint = MaterialTheme.colorScheme.error)
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun CustomMonthHeaderPreview() {
-    MonthHeader(state = MonthState(initialMonth = YearMonth.now(),
-        minMonth = YearMonth.of(1994, Month.JANUARY),
-        maxMonth = YearMonth.of(2023, Month.DECEMBER)), onAction = {})
 }

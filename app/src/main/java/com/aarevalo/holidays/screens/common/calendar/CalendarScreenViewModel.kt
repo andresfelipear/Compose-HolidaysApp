@@ -1,13 +1,10 @@
 package com.aarevalo.holidays.screens.common.calendar
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.layout.Box
-import androidx.compose.runtime.Composable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.aarevalo.holidays.calendar.domain.model.WeekDateGenerator
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.github.boguszpawlowski.composecalendar.WeekCalendar
-import io.github.boguszpawlowski.composecalendar.rememberWeekCalendarState
 import io.github.boguszpawlowski.composecalendar.week.Week
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,10 +13,7 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.LocalDate
-import java.time.Month
 import java.time.YearMonth
-import java.time.temporal.WeekFields
-import java.util.Locale
 import javax.inject.Inject
 
 @SuppressLint("NewApi")
@@ -67,27 +61,22 @@ class CalendarScreenViewModel @Inject constructor() : ViewModel(){
                     }
                     eventsChannel.send(CalendarScreenEvent.UpdatedMonth)
                 }
+
+                is CalendarScreenAction.UpdateWeek -> {
+                    _state.update {
+                        val newCurrentWeek = if(action.increment) it.currentWeek.plusWeeks(1) else it.currentWeek.minusWeeks(1)
+                        val newCurrentMonth = newCurrentWeek.yearMonth
+                        val newCurrentYear = newCurrentMonth.year
+
+                        it.copy(
+                            currentYear = newCurrentYear,
+                            currentMonth = newCurrentMonth,
+                            currentWeek = newCurrentWeek
+                        )
+                    }
+                }
                 else -> Unit
             }
         }
-    }
-}
-object WeekDateGenerator {
-    fun generateWeekDates(yearMonth: YearMonth, weekNumber: Int): List<LocalDate> {
-        val firstDayOfMonth = yearMonth.atDay(1)
-        val weekFields = WeekFields.of(Locale.getDefault())
-
-        val firstDayOfWeek = firstDayOfMonth
-            .with(weekFields.weekOfMonth(), weekNumber.toLong())
-            .with(weekFields.dayOfWeek(), 1)
-
-        return (0..6).map { firstDayOfWeek.plusDays(it.toLong()) }
-    }
-
-    fun getCurrentWeekDates(yearMonth: YearMonth): List<LocalDate> {
-        val today = LocalDate.now()
-        val weekFields = WeekFields.of(Locale.getDefault())
-        val currentWeek = today.get(weekFields.weekOfMonth())
-        return generateWeekDates(yearMonth, currentWeek)
     }
 }
