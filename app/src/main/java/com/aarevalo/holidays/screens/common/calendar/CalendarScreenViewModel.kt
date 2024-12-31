@@ -19,6 +19,7 @@ import java.time.LocalDate
 import java.time.Month
 import java.time.YearMonth
 import java.time.temporal.WeekFields
+import java.util.Locale
 import javax.inject.Inject
 
 @SuppressLint("NewApi")
@@ -38,43 +39,31 @@ class CalendarScreenViewModel @Inject constructor() : ViewModel(){
         viewModelScope.launch {
             when(action) {
                 is CalendarScreenAction.UpdateYear -> {
-                    if (action.increment) {
-                        _state.update {
-                            it.copy(currentYear = it.currentYear + 1)
+                    _state.update {
+                        val newCurrentYear = if(action.increment) it.currentYear + 1 else it.currentYear - 1
+                        val newCurrentMonth : YearMonth;
+                        val newCurrentWeek : Week
+                        if(newCurrentYear == LocalDate.now().year){
+                            newCurrentMonth = YearMonth.now()
+                            newCurrentWeek = Week.now()
                         }
-                    } else{
-                        _state.update {
-                            it.copy(currentYear = it.currentYear - 1)
+                        else{
+                            newCurrentMonth = YearMonth.of(newCurrentYear, it.currentMonth.month)
+                            newCurrentWeek = Week(WeekDateGenerator.getCurrentWeekDates(newCurrentMonth))
                         }
-                    }
-
-                    if(_state.value.currentYear == LocalDate.now().year){
-                        _state.update {
-                            it.copy(currentMonth = YearMonth.now(), currentWeek = Week.now())
-                        }
-                    }
-                    else{
-                        _state.update {
-                            it.copy(currentMonth = YearMonth.of(it.currentYear, it.currentMonth.month), currentWeek = Week.now())
-                        }
+                        it.copy(currentYear = newCurrentYear, currentMonth = newCurrentMonth, currentWeek = newCurrentWeek)
                     }
                     eventsChannel.send(CalendarScreenEvent.UpdatedYear)
                 }
 
                 is CalendarScreenAction.UpdateMonth -> {
 
-                    if (action.increment) {
-                        _state.update {
-                            it.copy(currentMonth = it.currentMonth.plusMonths(1))
-                        }
-                    } else{
-                        _state.update {
-                            it.copy(currentMonth = it.currentMonth.minusMonths(1))
-                        }
-                    }
-
                     _state.update {
-                        it.copy(currentYear = it.currentMonth.year, currentWeek = Week.now())
+                        val newCurrentMonth = if(action.increment) it.currentMonth.plusMonths(1) else it.currentMonth.minusMonths(1)
+                        val newCurrentYear = newCurrentMonth.year
+                        val newCurrentWeek = Week(WeekDateGenerator.getCurrentWeekDates(newCurrentMonth))
+
+                        it.copy(currentYear = newCurrentYear, currentMonth = newCurrentMonth, currentWeek = newCurrentWeek)
                     }
                     eventsChannel.send(CalendarScreenEvent.UpdatedMonth)
                 }
@@ -83,19 +72,22 @@ class CalendarScreenViewModel @Inject constructor() : ViewModel(){
         }
     }
 }
+object WeekDateGenerator {
+    fun generateWeekDates(yearMonth: YearMonth, weekNumber: Int): List<LocalDate> {
+        val firstDayOfMonth = yearMonth.atDay(1)
+        val weekFields = WeekFields.of(Locale.getDefault())
 
-fun getCurrentWeekDays(currentMonth: YearMonth): List<LocalDate> {
-    val firstDayOfMonth = currentMonth.atDay(1)
-    val currentDate = LocalDate.now()
+        val firstDayOfWeek = firstDayOfMonth
+            .with(weekFields.weekOfMonth(), weekNumber.toLong())
+            .with(weekFields.dayOfWeek(), 1)
 
-    val weekFields = WeekFields.ISO
-    val dayOfWeek = weekFields.dayOfWeek()
-    val currentDay = if (currentDate.year == currentMonth.year && currentDate.monthValue == currentMonth.monthValue) {
-        currentDate.dayOfMonth
-    } else {
-        1
+        return (0..6).map { firstDayOfWeek.plusDays(it.toLong()) }
     }
 
-    val startDate = firstDayOfMonth.with(dayOfWeek, (currentDay.toLong() - 1L)).minusDays((currentDate.dayOfWeek.value.toLong() - 1L))
-    return List(7) { startDate.plusDays(it.toLong()) }
+    fun getCurrentWeekDates(yearMonth: YearMonth): List<LocalDate> {
+        val today = LocalDate.now()
+        val weekFields = WeekFields.of(Locale.getDefault())
+        val currentWeek = today.get(weekFields.weekOfMonth())
+        return generateWeekDates(yearMonth, currentWeek)
+    }
 }

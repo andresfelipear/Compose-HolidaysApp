@@ -44,11 +44,11 @@ fun WeeklyCalendarScreen(
         modifier = modifier.fillMaxSize()
     ){
         val calendarState = rememberWeekCalendarState()
+        calendarState.weekState.currentWeek = state.currentWeek
         WeekCalendar(
             calendarState = calendarState,
         )
 
-        calendarState.weekState.currentWeek = state.currentWeek
     }
 }
 
