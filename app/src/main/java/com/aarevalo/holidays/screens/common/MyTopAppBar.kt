@@ -26,13 +26,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.aarevalo.holidays.R
-import com.aarevalo.holidays.screens.main.HomeScreenAction
+import com.aarevalo.holidays.screens.common.navigation.NavigationRootAction
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MyTopAppBar(
     modifier: Modifier = Modifier,
-    onAction: (HomeScreenAction) -> Unit = {},
+    onAction: (NavigationRootAction) -> Unit = {},
     isHolidaysTab: Boolean = false
 ){
     val context = LocalContext.current
@@ -88,7 +88,7 @@ fun MyTopAppBar(
                                 onClick = {
                                     isFilterMenuExpanded = false
                                     filterMenuText = context.getString(R.string.feat_calendar_filter_by_year)
-                                    onAction(HomeScreenAction.OnSelectedYearlyView)
+                                    onAction(NavigationRootAction.OnSelectedYearlyView)
                                 }
                             )
 
@@ -101,29 +101,27 @@ fun MyTopAppBar(
                                 onClick = {
                                     isFilterMenuExpanded = false
                                     filterMenuText = context.getString(R.string.feat_calendar_filter_by_month)
-                                    onAction(HomeScreenAction.OnSelectedMonthlyView)
+                                    onAction(NavigationRootAction.OnSelectedMonthlyView)
                                 }
                             )
 
                             DropdownMenuItem(
                                 text = {
                                     Text(
-                                        text = stringResource(id = R.string.feat_calendar_filter_by_day),
+                                        text = stringResource(id = R.string.feat_calendar_filter_by_week
+                                        ),
                                     )
                                 },
                                 onClick = {
                                     isFilterMenuExpanded = false
                                     filterMenuText = context.getString(R.string.feat_calendar_filter_by_day)
-                                    onAction(HomeScreenAction.OnSelectedWeeklyView)
+                                    onAction(NavigationRootAction.OnSelectedWeeklyView)
                                 }
                             )
                         }
                     }
                 }
-
-
             }
-
         },
     )
 }

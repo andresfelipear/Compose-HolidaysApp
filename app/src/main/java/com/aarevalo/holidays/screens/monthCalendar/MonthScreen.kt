@@ -20,6 +20,7 @@ import com.aarevalo.holidays.screens.common.calendar.components.MonthHeader
 import com.aarevalo.holidays.screens.common.calendar.components.WeekHeader
 import io.github.boguszpawlowski.composecalendar.StaticCalendar
 import io.github.boguszpawlowski.composecalendar.rememberCalendarState
+import io.github.boguszpawlowski.composecalendar.week.Week
 import java.time.YearMonth
 
 @Composable
@@ -67,7 +68,7 @@ fun MonthViewScreen(
     ){
         val calendarState = rememberCalendarState()
 
-        calendarState.monthState.currentMonth = YearMonth.of(state.currentYear, state.currentMonth.month)
+        calendarState.monthState.currentMonth = state.currentMonth
 
         StaticCalendar(
             modifier = Modifier
@@ -86,7 +87,8 @@ fun MonthViewScreenPreview(){
     MonthViewScreen(
         state = CalendarScreenState(
             currentYear = 2024,
-            currentMonth = YearMonth.now()
+            currentMonth = YearMonth.now(),
+            currentWeek = Week.now()
         )
     )
 }

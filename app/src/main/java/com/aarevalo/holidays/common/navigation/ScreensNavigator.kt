@@ -2,7 +2,7 @@ package com.aarevalo.holidays.common.navigation
 
 import android.util.Log
 import androidx.navigation.NavController
-import com.aarevalo.holidays.screens.common.BottomTab
+import com.aarevalo.holidays.screens.common.navigation.BottomTab
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -51,6 +51,7 @@ class ScreensNavigator {
                 val route = when(val routeName = backStackEntry.destination.route) {
                     Route.MonthTab.navCommand -> Route.MonthTab
                     Route.YearTab.navCommand -> Route.YearTab
+                    Route.WeekTab.navCommand -> Route.WeekTab
                     null -> null
                     else -> throw RuntimeException("unsupported route $routeName")
 

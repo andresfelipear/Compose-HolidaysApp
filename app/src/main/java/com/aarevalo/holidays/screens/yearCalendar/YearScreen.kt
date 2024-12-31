@@ -14,6 +14,7 @@ import com.aarevalo.holidays.screens.common.calendar.CalendarScreenAction
 import com.aarevalo.holidays.screens.common.calendar.CalendarScreenEvent
 import com.aarevalo.holidays.screens.common.calendar.CalendarScreenState
 import com.aarevalo.holidays.screens.common.calendar.CalendarScreenViewModel
+import io.github.boguszpawlowski.composecalendar.week.Week
 import java.time.YearMonth
 
 @Composable
@@ -69,5 +70,5 @@ fun YearScreen(
 @Preview(showBackground = true)
 @Composable
 fun MainScreenPreview(){
-    YearScreen(state = CalendarScreenState(currentYear = 2023, currentMonth = YearMonth.now()))
+    YearScreen(state = CalendarScreenState(currentYear = 2023, currentMonth = YearMonth.now(), currentWeek = Week.now()))
 }
