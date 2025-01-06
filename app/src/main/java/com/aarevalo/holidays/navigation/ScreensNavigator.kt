@@ -1,4 +1,4 @@
-package com.aarevalo.holidays.common.navigation
+package com.aarevalo.holidays.navigation
 
 import android.util.Log
 import androidx.navigation.NavController

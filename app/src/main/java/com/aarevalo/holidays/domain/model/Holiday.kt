@@ -1,4 +1,4 @@
-package com.aarevalo.holidays.calendar.domain.model
+package com.aarevalo.holidays.domain.model
 
 import java.time.LocalDate
 

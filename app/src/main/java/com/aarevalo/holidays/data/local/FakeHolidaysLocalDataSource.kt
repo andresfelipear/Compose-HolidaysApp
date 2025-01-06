@@ -1,8 +1,7 @@
-package com.aarevalo.holidays.calendar.data
+package com.aarevalo.holidays.data.local
 
 import com.aarevalo.holidays.calendar.domain.model.Holiday
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import kotlin.random.Random
 
 object FakeHolidaysLocalDataSource {

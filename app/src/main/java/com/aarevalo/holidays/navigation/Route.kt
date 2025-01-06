@@ -1,4 +1,4 @@
-package com.aarevalo.holidays.common.navigation
+package com.aarevalo.holidays.navigation
 
 sealed class Route(val routeName: String){
     data object MainTab : Route("mainTab")
