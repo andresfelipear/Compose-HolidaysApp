@@ -85,4 +85,10 @@ dependencies {
 
     // Compose Calendar
     implementation(libs.composecalendar)
+
+    // Retrofit
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.moshi.converter)
+    implementation(libs.retrofit.logging.interceptor)
+
 }
