@@ -3,6 +3,7 @@ package com.aarevalo.holidays.screens.common.calendar
 import android.annotation.SuppressLint
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.aarevalo.holidays.data.local.HolidaysCache
 import com.aarevalo.holidays.domain.model.Country
 import com.aarevalo.holidays.domain.model.Holiday
 import com.aarevalo.holidays.domain.model.State
@@ -25,7 +26,8 @@ import javax.inject.Inject
 @SuppressLint("NewApi")
 @HiltViewModel
 class CalendarScreenViewModel @Inject constructor(
-    private val fetchHolidaysUseCase: FetchHolidaysUseCase
+    private val fetchHolidaysUseCase: FetchHolidaysUseCase,
+    private val holidaysCache: HolidaysCache
 ) : ViewModel(){
     private val _state = MutableStateFlow(
         CalendarScreenState(
@@ -59,6 +61,8 @@ class CalendarScreenViewModel @Inject constructor(
         viewModelScope.launch {
             when(action) {
                 is CalendarScreenAction.UpdateYear -> {
+                    holidaysCache.clearHolidays()
+
                     _state.update {
                         val newCurrentYear = if(action.increment) it.currentYear + 1 else it.currentYear - 1
                         val newCurrentMonth : YearMonth;
@@ -83,7 +87,12 @@ class CalendarScreenViewModel @Inject constructor(
                         val newCurrentYear = newCurrentMonth.year
                         val newCurrentWeek = Week(WeekDateGenerator.getCurrentWeekDates(newCurrentMonth))
 
-                        it.copy(currentYear = newCurrentYear, currentMonth = newCurrentMonth, currentWeek = newCurrentWeek)
+                        if(newCurrentYear != it.currentYear){
+                            holidaysCache.clearHolidays()
+                            it.copy(currentYear = newCurrentYear, currentMonth = newCurrentMonth, currentWeek = newCurrentWeek)
+                        } else {
+                            it.copy(currentMonth = newCurrentMonth, currentWeek = newCurrentWeek)
+                        }
                     }
                     eventsChannel.send(CalendarScreenEvent.UpdatedMonth)
                 }
@@ -94,11 +103,12 @@ class CalendarScreenViewModel @Inject constructor(
                         val newCurrentMonth = newCurrentWeek.yearMonth
                         val newCurrentYear = newCurrentMonth.year
 
-                        it.copy(
-                            currentYear = newCurrentYear,
-                            currentMonth = newCurrentMonth,
-                            currentWeek = newCurrentWeek
-                        )
+                        if(newCurrentYear != it.currentYear){
+                            holidaysCache.clearHolidays()
+                            it.copy(currentYear = newCurrentYear, currentMonth = newCurrentMonth, currentWeek = newCurrentWeek)
+                        } else {
+                            it.copy(currentMonth = newCurrentMonth, currentWeek = newCurrentWeek)
+                        }
                     }
                 }
                 else -> Unit
