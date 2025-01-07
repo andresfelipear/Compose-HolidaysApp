@@ -25,7 +25,6 @@ import java.util.Locale
 fun HolidaysScreenRoot(
     viewModel: CalendarScreenViewModel
 ){
-    val state by viewModel.state.collectAsState()
     val holidays by viewModel.holidays.collectAsState()
 
     LaunchedEffect(Unit) {

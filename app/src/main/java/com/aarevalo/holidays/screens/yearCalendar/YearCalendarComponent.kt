@@ -32,24 +32,20 @@ fun YearCalendarComponent(
     modifier: Modifier = Modifier,
     onAction: (CalendarScreenAction) -> Unit
 ) {
-    Box(
-        modifier = modifier
+    Column(
+        modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState()),
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Column(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            YearNavigationRow(
-                currentYear = currentYear,
-                onAction = onAction
-            )
+        YearNavigationRow(
+            currentYear = currentYear,
+            onAction = onAction
+        )
 
-            YearMonthsGrid(
-                currentYear = currentYear
-            )
-        }
+        YearMonthsGrid(
+            currentYear = currentYear
+        )
     }
 }
 

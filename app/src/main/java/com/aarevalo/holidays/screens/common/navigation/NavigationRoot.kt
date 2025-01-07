@@ -40,8 +40,8 @@ fun NavigationRoot(
 
     val currentBottomTab = screenNavigator.currentBottomTab.collectAsState()
 
-    val isHolidaysTab = screenNavigator.currentRoute.map{ route ->
-        route is Route.HolidaysTab
+    val isHolidaysTab = screenNavigator.currentBottomTab.map{ route ->
+        route == BottomTab.Holidays
     }.collectAsState(initial = false)
 
     Scaffold(
