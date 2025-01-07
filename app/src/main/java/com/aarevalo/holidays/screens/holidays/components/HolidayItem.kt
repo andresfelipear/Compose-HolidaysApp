@@ -3,15 +3,13 @@ package com.aarevalo.holidays.screens.holidays.components
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import com.aarevalo.holidays.calendar.domain.model.Holiday
+import com.aarevalo.holidays.domain.model.Holiday
 import java.time.LocalDate
 import java.time.format.TextStyle
 import java.util.Locale

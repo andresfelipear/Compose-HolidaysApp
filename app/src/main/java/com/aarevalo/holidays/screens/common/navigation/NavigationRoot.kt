@@ -13,17 +13,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.aarevalo.holidays.common.navigation.Route
-import com.aarevalo.holidays.common.navigation.ScreensNavigator
+import com.aarevalo.holidays.data.local.FakeHolidaysLocalDataSource.holidays
+import com.aarevalo.holidays.navigation.Route
+import com.aarevalo.holidays.navigation.ScreensNavigator
 import com.aarevalo.holidays.screens.common.MyBottomTabsBar
 import com.aarevalo.holidays.screens.common.MyTopAppBar
 import com.aarevalo.holidays.screens.common.calendar.CalendarScreenViewModel
 import com.aarevalo.holidays.screens.holidays.HolidaysScreen
+import com.aarevalo.holidays.screens.holidays.HolidaysScreenRoot
 import com.aarevalo.holidays.screens.yearCalendar.YearScreenRoot
 import com.aarevalo.holidays.screens.monthCalendar.MonthScreenRoot
 import com.aarevalo.holidays.screens.weekCalendar.WeeklyCalendarScreenRoot
@@ -124,7 +125,7 @@ fun NavigationContent(
             }
 
             composable(Route.HolidaysTab.routeName){
-                HolidaysScreen()
+                HolidaysScreenRoot(viewModel = viewModel)
             }
         }
     }

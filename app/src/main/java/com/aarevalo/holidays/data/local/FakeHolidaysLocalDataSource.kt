@@ -1,6 +1,6 @@
 package com.aarevalo.holidays.data.local
 
-import com.aarevalo.holidays.calendar.domain.model.Holiday
+import com.aarevalo.holidays.domain.model.Holiday
 import java.time.LocalDate
 import kotlin.random.Random
 

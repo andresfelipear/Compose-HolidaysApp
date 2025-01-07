@@ -7,6 +7,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.aarevalo.holidays.domain.model.Country
 import com.aarevalo.holidays.screens.common.calendar.CalendarScreenAction
 import com.aarevalo.holidays.screens.common.calendar.CalendarScreenState
 import com.aarevalo.holidays.screens.common.calendar.CalendarScreenViewModel
@@ -60,5 +61,6 @@ fun WeeklyCalendarScreenPreview() {
         state = CalendarScreenState(
             currentYear = 2024,
             currentMonth = YearMonth.now(),
-            currentWeek = Week.now()))
+            currentWeek = Week.now(),
+            country = Country("Canada", "CA")))
 }

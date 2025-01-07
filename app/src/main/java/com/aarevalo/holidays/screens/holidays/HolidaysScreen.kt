@@ -8,26 +8,41 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.aarevalo.holidays.calendar.data.local.FakeHolidaysLocalDataSource
+import com.aarevalo.holidays.data.local.FakeHolidaysLocalDataSource.holidays
+import com.aarevalo.holidays.domain.model.Holiday
+import com.aarevalo.holidays.screens.common.calendar.CalendarScreenViewModel
 import com.aarevalo.holidays.screens.holidays.components.HolidayItem
 import com.aarevalo.holidays.screens.holidays.components.SectionTitle
 import java.util.Locale
 
 @Composable
 fun HolidaysScreenRoot(
-    navigateBack: () -> Unit
+    viewModel: CalendarScreenViewModel
 ){
-    HolidaysScreen()
+    val state by viewModel.state.collectAsState()
+    val holidays by viewModel.holidays.collectAsState()
+
+    LaunchedEffect(Unit) {
+        viewModel.fetchHolidays()
+    }
+
+    HolidaysScreen(
+        holidays = holidays
+    )
 }
 
 @Composable
 fun HolidaysScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    holidays: List<Holiday>,
 ){
-    val groupedHolidays = FakeHolidaysLocalDataSource.holidays.groupBy { it.date.month }
+    val groupedHolidays = holidays.groupBy { it.date.month }
     LazyColumn(
         contentPadding = PaddingValues(horizontal = 0.dp),
         modifier = Modifier.fillMaxWidth(),
@@ -61,5 +76,5 @@ fun HolidaysScreen(
 @Composable
 @Preview(showBackground = true)
 fun HolidaysScreenPreview(){
-    HolidaysScreen()
+    HolidaysScreen(holidays = holidays)
 }

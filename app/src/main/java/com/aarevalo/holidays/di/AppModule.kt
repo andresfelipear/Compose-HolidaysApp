@@ -9,6 +9,7 @@ import io.github.boguszpawlowski.composecalendar.BuildConfig
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 @Module
@@ -31,6 +32,7 @@ class AppModule {
 
         return Retrofit.Builder()
             .baseUrl(baseUrl)
+            .addConverterFactory(GsonConverterFactory.create())
             .client(httpClient)
             .build()
     }

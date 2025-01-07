@@ -10,6 +10,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.aarevalo.holidays.R
+import com.aarevalo.holidays.domain.model.Country
 import com.aarevalo.holidays.screens.common.calendar.CalendarScreenAction
 import com.aarevalo.holidays.screens.common.calendar.CalendarScreenEvent
 import com.aarevalo.holidays.screens.common.calendar.CalendarScreenState
@@ -70,5 +71,10 @@ fun YearScreen(
 @Preview(showBackground = true)
 @Composable
 fun MainScreenPreview(){
-    YearScreen(state = CalendarScreenState(currentYear = 2023, currentMonth = YearMonth.now(), currentWeek = Week.now()))
+    YearScreen(
+        state = CalendarScreenState(
+            currentYear = 2023,
+            currentMonth = YearMonth.now(),
+            currentWeek = Week.now(),
+            country = Country("Canada", "CA")))
 }
