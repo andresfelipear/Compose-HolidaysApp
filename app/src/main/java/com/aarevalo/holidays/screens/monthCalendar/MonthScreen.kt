@@ -32,29 +32,11 @@ import java.time.YearMonth
 @Composable
 fun MonthScreenRoot(viewModel: CalendarScreenViewModel){
     val state by viewModel.state.collectAsState()
-    val events = viewModel.events
     val holidays by viewModel.holidays.collectAsState()
 
     LaunchedEffect(state.currentYear) {
         viewModel.fetchHolidays()
     }
-
-    val context = LocalContext.current
-
-//    LaunchedEffect(true) {
-//        events.collect { event ->
-//            when(event) {
-//                is CalendarScreenEvent.UpdatedMonth -> {
-//                    Toast.makeText(context,
-//                        context.getString(R.string.feat_calendar_month_updated,
-//                            state.currentMonth.month.toString()),
-//                        Toast.LENGTH_SHORT)
-//                        .show()
-//                }
-//                else -> Unit
-//            }
-//        }
-//    }
 
     MonthViewScreen(
         state = state,

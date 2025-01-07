@@ -1,5 +1,6 @@
 package com.aarevalo.holidays.screens.common.navigation
 
+import MyTopAppBar
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -17,13 +18,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.aarevalo.holidays.data.local.FakeHolidaysLocalDataSource.holidays
 import com.aarevalo.holidays.navigation.Route
 import com.aarevalo.holidays.navigation.ScreensNavigator
 import com.aarevalo.holidays.screens.common.MyBottomTabsBar
-import com.aarevalo.holidays.screens.common.MyTopAppBar
 import com.aarevalo.holidays.screens.common.calendar.CalendarScreenViewModel
-import com.aarevalo.holidays.screens.holidays.HolidaysScreen
 import com.aarevalo.holidays.screens.holidays.HolidaysScreenRoot
 import com.aarevalo.holidays.screens.yearCalendar.YearScreenRoot
 import com.aarevalo.holidays.screens.monthCalendar.MonthScreenRoot

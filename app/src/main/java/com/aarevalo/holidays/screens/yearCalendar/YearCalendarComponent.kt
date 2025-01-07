@@ -1,7 +1,6 @@
 package com.aarevalo.holidays.screens.yearCalendar
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -23,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.aarevalo.holidays.domain.model.Holiday
 import com.aarevalo.holidays.screens.common.calendar.CalendarScreenAction
 import java.time.Month
 
@@ -30,7 +30,8 @@ import java.time.Month
 fun YearCalendarComponent(
     currentYear: Int,
     modifier: Modifier = Modifier,
-    onAction: (CalendarScreenAction) -> Unit
+    onAction: (CalendarScreenAction) -> Unit,
+    holidays: List<Holiday>
 ) {
     Column(
         modifier = Modifier
@@ -44,7 +45,8 @@ fun YearCalendarComponent(
         )
 
         YearMonthsGrid(
-            currentYear = currentYear
+            currentYear = currentYear,
+            holidays = holidays
         )
     }
 }
@@ -96,7 +98,10 @@ fun YearNavigationRow(
 }
 
 @Composable
-fun YearMonthsGrid(currentYear: Int) {
+fun YearMonthsGrid(
+    currentYear: Int,
+    holidays: List<Holiday>
+) {
     val monthIndices = remember { Month.entries.toTypedArray() }
 
     Column(
@@ -116,7 +121,8 @@ fun YearMonthsGrid(currentYear: Int) {
                         CustomMonthCalendar(
                             year = currentYear,
                             month = monthIndices[monthIndex],
-                            modifier = Modifier.weight(1f)
+                            modifier = Modifier.weight(1f),
+                            holidays = holidays
                         )
                     }
                 }
@@ -131,6 +137,7 @@ fun YearMonthsGrid(currentYear: Int) {
 fun CalendarPreview(){
     YearCalendarComponent(
         currentYear = 2023,
-        onAction = {}
+        onAction = {},
+        holidays = emptyList()
     )
 }

@@ -1,18 +1,14 @@
 package com.aarevalo.holidays.screens.yearCalendar
 
-import android.widget.Toast
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.hilt.navigation.compose.hiltViewModel
-import com.aarevalo.holidays.R
 import com.aarevalo.holidays.domain.model.Country
+import com.aarevalo.holidays.domain.model.Holiday
 import com.aarevalo.holidays.screens.common.calendar.CalendarScreenAction
-import com.aarevalo.holidays.screens.common.calendar.CalendarScreenEvent
 import com.aarevalo.holidays.screens.common.calendar.CalendarScreenState
 import com.aarevalo.holidays.screens.common.calendar.CalendarScreenViewModel
 import io.github.boguszpawlowski.composecalendar.week.Week
@@ -24,23 +20,10 @@ fun YearScreenRoot(
 )
 {
     val state by viewModel.state.collectAsState()
-    val events = viewModel.events
+    val holidays by viewModel.holidays.collectAsState()
 
-    val context = LocalContext.current
-
-    LaunchedEffect(events){
-        events.collect { event ->
-            when(event){
-                is CalendarScreenEvent.UpdatedYear -> {
-                    Toast.makeText(
-                        context,
-                        context.getString(R.string.feat_calendar_year_updated, state.currentYear),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-                else -> Unit
-            }
-        }
+    LaunchedEffect(state.currentYear) {
+        viewModel.fetchHolidays()
     }
 
     YearScreen(
@@ -51,7 +34,8 @@ fun YearScreenRoot(
                     viewModel.onAction(action)
                 }
             }
-        }
+        },
+        holidays = holidays
     )
 }
 
@@ -59,12 +43,14 @@ fun YearScreenRoot(
 fun YearScreen(
     modifier: Modifier = Modifier,
     state: CalendarScreenState,
-    onAction: (CalendarScreenAction) -> Unit = {}
+    onAction: (CalendarScreenAction) -> Unit = {},
+    holidays: List<Holiday> = emptyList()
 ){
     YearCalendarComponent(
         modifier = modifier,
         currentYear = state.currentYear,
-        onAction = onAction
+        onAction = onAction,
+        holidays = holidays
     )
 }
 

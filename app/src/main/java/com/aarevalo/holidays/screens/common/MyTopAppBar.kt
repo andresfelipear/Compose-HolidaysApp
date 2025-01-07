@@ -1,5 +1,3 @@
-package com.aarevalo.holidays.screens.common
-
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -16,6 +14,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -34,94 +33,132 @@ fun MyTopAppBar(
     modifier: Modifier = Modifier,
     onAction: (NavigationRootAction) -> Unit = {},
     isHolidaysTab: Boolean = false
-){
-    val context = LocalContext.current
+) {
     var isFilterMenuExpanded by remember { mutableStateOf(false) }
-    var filterMenuText by remember { mutableStateOf(context.getString(R.string.feat_calendar_filter_by_default)) }
+    val context = LocalContext.current
+    var filterMenuText by remember {
+        mutableStateOf(context.getString(R.string.feat_calendar_filter_by_default))
+    }
 
     TopAppBar(
+        modifier = modifier,
         navigationIcon = {
-            Icon(
-                imageVector = Icons.Rounded.Menu,
-                contentDescription = stringResource(id = R.string.menu),
-                tint = MaterialTheme.colorScheme.onSurface,
-                modifier = Modifier.clickable {
-                    println("Menu")
-                }
-            )
+            MenuIcon()
         },
         title = {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.padding(horizontal = 16.dp)
-            ){
-                Text(
-                    modifier = Modifier.align(Alignment.CenterVertically),
-                    text = if(isHolidaysTab) stringResource(id = R.string.feat_holidays_title) else filterMenuText,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    fontWeight = FontWeight.Bold,
+            key(isHolidaysTab) {
+                TitleContent(
+                    isHolidaysTab = isHolidaysTab,
+                    filterMenuText = filterMenuText,
+                    isFilterMenuExpanded = isFilterMenuExpanded,
+                    onFilterMenuExpandedChange = { isFilterMenuExpanded = it },
+                    onFilterMenuTextChange = { filterMenuText = it },
+                    onAction = onAction
                 )
-
-                if(!isHolidaysTab){
-                    IconButton(
-                        modifier = Modifier.align(Alignment.CenterVertically),
-                        onClick = {
-                            isFilterMenuExpanded = true
-                        }
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.KeyboardArrowDown,
-                            contentDescription = stringResource(id = R.string.feat_calendar_filter),
-                            tint = MaterialTheme.colorScheme.onSurface
-                        )
-
-                        DropdownMenu(
-                            expanded = isFilterMenuExpanded,
-                            onDismissRequest = { isFilterMenuExpanded = false }
-                        ) {
-                            DropdownMenuItem(
-                                text = {
-                                    Text(
-                                        text = stringResource(id = R.string.feat_calendar_filter_by_year),
-                                    )
-                                },
-                                onClick = {
-                                    isFilterMenuExpanded = false
-                                    filterMenuText = context.getString(R.string.feat_calendar_filter_by_year)
-                                    onAction(NavigationRootAction.OnSelectedYearlyView)
-                                }
-                            )
-
-                            DropdownMenuItem(
-                                text = {
-                                    Text(
-                                        text = stringResource(id = R.string.feat_calendar_filter_by_month),
-                                    )
-                                },
-                                onClick = {
-                                    isFilterMenuExpanded = false
-                                    filterMenuText = context.getString(R.string.feat_calendar_filter_by_month)
-                                    onAction(NavigationRootAction.OnSelectedMonthlyView)
-                                }
-                            )
-
-                            DropdownMenuItem(
-                                text = {
-                                    Text(
-                                        text = stringResource(id = R.string.feat_calendar_filter_by_week
-                                        ),
-                                    )
-                                },
-                                onClick = {
-                                    isFilterMenuExpanded = false
-                                    filterMenuText = context.getString(R.string.feat_calendar_filter_by_day)
-                                    onAction(NavigationRootAction.OnSelectedWeeklyView)
-                                }
-                            )
-                        }
-                    }
-                }
             }
-        },
+        }
     )
+}
+
+@Composable
+private fun MenuIcon() {
+    Icon(
+        imageVector = Icons.Rounded.Menu,
+        contentDescription = stringResource(id = R.string.menu),
+        tint = MaterialTheme.colorScheme.onSurface,
+        modifier = Modifier.clickable {
+            println("Menu")
+        }
+    )
+}
+
+@Composable
+private fun TitleContent(
+    isHolidaysTab: Boolean,
+    filterMenuText: String,
+    isFilterMenuExpanded: Boolean,
+    onFilterMenuExpandedChange: (Boolean) -> Unit,
+    onFilterMenuTextChange: (String) -> Unit,
+    onAction: (NavigationRootAction) -> Unit
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier.padding(horizontal = 16.dp)
+    ) {
+        Text(
+            modifier = Modifier.align(Alignment.CenterVertically),
+            text = if(isHolidaysTab) stringResource(id = R.string.feat_holidays_title) else filterMenuText,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            fontWeight = FontWeight.Bold,
+        )
+
+        if (!isHolidaysTab) {
+            FilterButton(
+                isExpanded = isFilterMenuExpanded,
+                onExpandedChange = onFilterMenuExpandedChange,
+                onMenuItemClick = { action, text ->
+                    onFilterMenuTextChange(text)
+                    onAction(action)
+                }
+            )
+        }
+    }
+}
+
+@Composable
+private fun FilterButton(
+    isExpanded: Boolean,
+    onExpandedChange: (Boolean) -> Unit,
+    onMenuItemClick: (NavigationRootAction, String) -> Unit
+) {
+    val context = LocalContext.current
+
+    IconButton(
+        modifier = Modifier,
+        onClick = { onExpandedChange(true) }
+    ) {
+        Icon(
+            imageVector = Icons.Default.KeyboardArrowDown,
+            contentDescription = stringResource(id = R.string.feat_calendar_filter),
+            tint = MaterialTheme.colorScheme.onSurface
+        )
+
+        DropdownMenu(
+            expanded = isExpanded,
+            onDismissRequest = { onExpandedChange(false) }
+        ) {
+            DropdownMenuItem(
+                text = { Text(stringResource(id = R.string.feat_calendar_filter_by_year)) },
+                onClick = {
+                    onExpandedChange(false)
+                    onMenuItemClick(
+                        NavigationRootAction.OnSelectedYearlyView,
+                        context.getString(R.string.feat_calendar_filter_by_year)
+                    )
+                }
+            )
+
+            DropdownMenuItem(
+                text = { Text(stringResource(id = R.string.feat_calendar_filter_by_month)) },
+                onClick = {
+                    onExpandedChange(false)
+                    onMenuItemClick(
+                        NavigationRootAction.OnSelectedMonthlyView,
+                        context.getString(R.string.feat_calendar_filter_by_month)
+                    )
+                }
+            )
+
+            DropdownMenuItem(
+                text = { Text(stringResource(id = R.string.feat_calendar_filter_by_week)) },
+                onClick = {
+                    onExpandedChange(false)
+                    onMenuItemClick(
+                        NavigationRootAction.OnSelectedWeeklyView,
+                        context.getString(R.string.feat_calendar_filter_by_day)
+                    )
+                }
+            )
+        }
+    }
 }
