@@ -2,7 +2,7 @@ package com.aarevalo.holidays.data.local.di
 
 import android.content.Context
 import androidx.room.Room
-import com.aarevalo.holidays.data.local.HolidaysCache
+import com.aarevalo.holidays.data.local.DefaultHolidayCache
 import com.aarevalo.holidays.data.local.HolidaysDatabase
 import com.aarevalo.holidays.data.local.RoomCountryLocalDataSource
 import com.aarevalo.holidays.data.local.RoomHolidayLocalDataSource
@@ -10,6 +10,7 @@ import com.aarevalo.holidays.data.local.daos.CountryDao
 import com.aarevalo.holidays.data.local.daos.HolidayDao
 import com.aarevalo.holidays.domain.CountryLocalDataSource
 import com.aarevalo.holidays.domain.HolidayLocalDataSource
+import com.aarevalo.holidays.domain.HolidayCache
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -21,12 +22,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 class DataModule {
-
-    @Provides
-    @Singleton
-    fun provideHolidaysCache(): HolidaysCache {
-        return HolidaysCache()
-    }
 
     @Provides
     @Singleton
@@ -63,4 +58,7 @@ class DataModule {
         dispatcherIO: CoroutineDispatcher
     ): CountryLocalDataSource = RoomCountryLocalDataSource(countriesDao, dispatcherIO)
 
+    @Provides
+    @Singleton
+    fun provideHolidayCache(): HolidayCache = DefaultHolidayCache()
 }

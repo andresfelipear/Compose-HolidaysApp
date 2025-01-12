@@ -1,6 +1,5 @@
 package com.aarevalo.holidays.di
 
-import com.aarevalo.holidays.data.local.HolidaysCache
 import com.aarevalo.holidays.data.remote.HolidaysApi
 import dagger.Module
 import dagger.Provides

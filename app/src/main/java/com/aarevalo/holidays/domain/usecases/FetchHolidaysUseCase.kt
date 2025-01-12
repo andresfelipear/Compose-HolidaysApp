@@ -1,7 +1,7 @@
 package com.aarevalo.holidays.domain.usecases
 
-import com.aarevalo.holidays.data.local.HolidaysCache
 import com.aarevalo.holidays.data.remote.HolidaysApi
+import com.aarevalo.holidays.domain.HolidayCache
 import com.aarevalo.holidays.domain.model.Country
 import com.aarevalo.holidays.domain.model.Holiday
 import com.aarevalo.holidays.domain.model.State
@@ -14,10 +14,9 @@ import javax.inject.Inject
 @Suppress("SENSELESS_COMPARISON")
 class FetchHolidaysUseCase @Inject constructor(
     private val holidaysApi: HolidaysApi,
-    private val holidaysCache: HolidaysCache
+    private val holidaysCache: HolidayCache
 ) {
     private var holidays: List<Holiday> = emptyList()
-
 
     suspend fun fetchHolidays(year: Int, country: Country, state: State? = null): List<Holiday> {
         return withContext(Dispatchers.IO) {

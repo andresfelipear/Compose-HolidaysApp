@@ -3,7 +3,7 @@ package com.aarevalo.holidays.screens.common.calendar
 import android.annotation.SuppressLint
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.aarevalo.holidays.data.local.HolidaysCache
+import com.aarevalo.holidays.domain.HolidayCache
 import com.aarevalo.holidays.domain.model.Country
 import com.aarevalo.holidays.domain.model.Holiday
 import com.aarevalo.holidays.domain.model.State
@@ -15,7 +15,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -27,7 +26,7 @@ import javax.inject.Inject
 @HiltViewModel
 class CalendarScreenViewModel @Inject constructor(
     private val fetchHolidaysUseCase: FetchHolidaysUseCase,
-    private val holidaysCache: HolidaysCache
+    private val holidaysCache: HolidayCache
 ) : ViewModel(){
     private val _state = MutableStateFlow(
         CalendarScreenState(
@@ -47,7 +46,6 @@ class CalendarScreenViewModel @Inject constructor(
     val state = _state.asStateFlow()
 
     private val eventsChannel = Channel<CalendarScreenEvent>()
-    val events = eventsChannel.receiveAsFlow()
 
     val holidays = MutableStateFlow<List<Holiday>>(emptyList())
 
