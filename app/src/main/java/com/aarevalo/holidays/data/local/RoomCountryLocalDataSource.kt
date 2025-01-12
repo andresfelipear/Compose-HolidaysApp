@@ -14,12 +14,8 @@ class RoomCountryLocalDataSource @Inject constructor(
     private val countryDao: CountryDao,
     private val dispatcherIO: CoroutineDispatcher
 ): CountryLocalDataSource {
-    override val taskFlow: Flow<List<Country>>
-        get() = countryDao.getCountries().map {
-            it.map { countryEntity ->
-                countryEntity.toCountry()
-            }
-        }
+    override val countries: List<Country>
+        get() = countryDao.getCountries().map { it.toCountry() }
 
     override suspend fun clearCountries() = withContext(dispatcherIO) {
         countryDao.clearCountries()

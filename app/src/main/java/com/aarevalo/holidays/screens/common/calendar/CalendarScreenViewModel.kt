@@ -9,6 +9,7 @@ import com.aarevalo.holidays.domain.model.Holiday
 import com.aarevalo.holidays.domain.model.State
 import com.aarevalo.holidays.domain.model.WeekDateGenerator
 import com.aarevalo.holidays.domain.usecases.FetchHolidaysUseCase
+import com.aarevalo.holidays.domain.usecases.FetchListOfCountriesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.boguszpawlowski.composecalendar.week.Week
 import kotlinx.coroutines.Dispatchers
@@ -26,6 +27,7 @@ import javax.inject.Inject
 @HiltViewModel
 class CalendarScreenViewModel @Inject constructor(
     private val fetchHolidaysUseCase: FetchHolidaysUseCase,
+    private val fetchListOfCountriesUseCase: FetchListOfCountriesUseCase,
     private val holidaysCache: HolidayCache
 ) : ViewModel(){
     private val _state = MutableStateFlow(
@@ -48,10 +50,24 @@ class CalendarScreenViewModel @Inject constructor(
     private val eventsChannel = Channel<CalendarScreenEvent>()
 
     val holidays = MutableStateFlow<List<Holiday>>(emptyList())
+    val countries = MutableStateFlow<List<Country>>(emptyList())
+
+    init {
+        viewModelScope.launch {
+            fetchHolidays()
+            fetchCountries()
+        }
+    }
 
     suspend fun fetchHolidays(){
         withContext(Dispatchers.IO){
             holidays.value = fetchHolidaysUseCase.fetchHolidays(state.value.currentYear, state.value.country, state.value.state)
+        }
+    }
+
+    suspend fun fetchCountries(){
+        withContext(Dispatchers.IO){
+            countries.value = fetchListOfCountriesUseCase.fetchListOfCountries()
         }
     }
 
@@ -109,6 +125,13 @@ class CalendarScreenViewModel @Inject constructor(
                         }
                     }
                 }
+
+                is CalendarScreenAction.UpdateCountry -> {
+                    _state.update {
+                        it.copy(country = action.country)
+                    }
+                }
+
                 else -> Unit
             }
         }

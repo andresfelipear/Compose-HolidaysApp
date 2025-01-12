@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface CountryDao {
     @Query("SELECT * FROM countries")
-    fun getCountries(): Flow<List<CountryEntity>>
+    fun getCountries(): List<CountryEntity>
 
     @Query("DELETE FROM countries")
     suspend fun clearCountries()
