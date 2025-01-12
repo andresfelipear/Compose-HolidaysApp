@@ -27,6 +27,10 @@ fun HolidaysScreenRoot(
 ){
     val holidays by viewModel.holidays.collectAsState()
 
+    LaunchedEffect(Unit) {
+        viewModel.fetchHolidays()
+    }
+
     HolidaysScreen(
         holidays = holidays
     )

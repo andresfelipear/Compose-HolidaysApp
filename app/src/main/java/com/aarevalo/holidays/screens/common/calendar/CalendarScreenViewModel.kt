@@ -130,6 +130,7 @@ class CalendarScreenViewModel @Inject constructor(
                     _state.update {
                         it.copy(country = action.country)
                     }
+                    holidaysCache.clearHolidays()
                 }
 
                 else -> Unit
