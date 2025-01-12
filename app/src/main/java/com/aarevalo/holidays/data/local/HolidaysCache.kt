@@ -2,12 +2,9 @@ package com.aarevalo.holidays.data.local
 
 import com.aarevalo.holidays.domain.model.Holiday
 import java.util.concurrent.locks.ReentrantLock
-import javax.inject.Inject
-import javax.inject.Singleton
 import kotlin.concurrent.withLock
 
-@Singleton
-class HolidaysCache @Inject constructor() {
+class HolidaysCache{
 
     private val lock = ReentrantLock()
 

@@ -32,6 +32,8 @@ class ScreensNavigator {
                 val bottomTab = when(val routeName = backStackEntry.destination.route) {
                     Route.MainTab.navCommand -> BottomTab.Main
                     Route.HolidaysTab.navCommand -> BottomTab.Holidays
+                    Route.Settings.navCommand -> null
+                    Route.About.navCommand -> null
                     null -> null
                     else -> throw RuntimeException("unsupported bottom tab: $routeName")
                 }
@@ -89,7 +91,29 @@ class ScreensNavigator {
     }
 
     fun toRoute(route: Route){
-        nestedNavController.navigate(route.navCommand)
+        when(route){
+            is Route.Settings, is Route.About -> {
+                navigateToDestination(route.navCommand)
+            }
+            else -> nestedNavController.navigate(route.navCommand)
+        }
     }
 
+    private fun navigateToDestination(route: String){
+        val destinationExists = parentNavController.graph.findNode(route) != null
+
+        if (destinationExists) {
+            parentNavController.navigate(route) {
+                parentNavController.graph.startDestinationRoute?.let { startRoute ->
+                    popUpTo(startRoute) {
+                        saveState = true
+                    }
+                    launchSingleTop = true
+                    restoreState = true
+                }
+            }
+        } else{
+            Log.e("Navigation", "Destination route does not exist: $route")
+        }
+    }
 }

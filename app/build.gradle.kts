@@ -88,7 +88,7 @@ dependencies {
 
     // Retrofit
     implementation(libs.retrofit)
-//    implementation(libs.retrofit.moshi.converter)
+    implementation(libs.retrofit.moshi.converter)
     implementation(libs.retrofit.gson.converter)
     implementation(libs.retrofit.logging.interceptor)
 
