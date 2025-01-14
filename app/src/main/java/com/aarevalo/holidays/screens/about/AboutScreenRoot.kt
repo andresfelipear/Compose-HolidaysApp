@@ -1,5 +1,8 @@
 package com.aarevalo.holidays.screens.about
 
+import android.content.Intent
+import android.net.Uri
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -55,12 +58,18 @@ fun AboutScreen(
             Text(
                 text = context.getString(R.string.contact_email),
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.primary
+                color = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.clickable {
+                    val intent = Intent(Intent.ACTION_SENDTO).apply {
+                        data = Uri.parse("mailto:andresfelipear@gmail.com")
+                    }
+                    context.startActivity(intent)
+                }
             )
         }
 
         Text(
-            text = context.getString(R.string.about_screen_app_version),
+            text = context.getString(R.string.app_version),
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
