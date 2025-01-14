@@ -1,16 +1,27 @@
 package com.aarevalo.holidays.screens.common.calendar
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.location.Geocoder
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Info
+import androidx.compose.material.icons.rounded.Settings
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.aarevalo.holidays.R
 import com.aarevalo.holidays.domain.HolidayCache
 import com.aarevalo.holidays.domain.model.Country
+import com.aarevalo.holidays.domain.model.DrawerItem
 import com.aarevalo.holidays.domain.model.Holiday
 import com.aarevalo.holidays.domain.model.State
 import com.aarevalo.holidays.domain.model.WeekDateGenerator
 import com.aarevalo.holidays.domain.usecases.FetchHolidaysUseCase
 import com.aarevalo.holidays.domain.usecases.FetchListOfCountriesUseCase
+import com.aarevalo.holidays.domain.usecases.GetCurrentLocationUseCase
+import com.aarevalo.holidays.navigation.Route
+import com.google.android.gms.location.LocationServices
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import io.github.boguszpawlowski.composecalendar.week.Week
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
@@ -21,14 +32,18 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.time.LocalDate
 import java.time.YearMonth
+import java.util.Locale
 import javax.inject.Inject
 
+@Suppress("DEPRECATION")
 @SuppressLint("NewApi")
 @HiltViewModel
 class CalendarScreenViewModel @Inject constructor(
     private val fetchHolidaysUseCase: FetchHolidaysUseCase,
     private val fetchListOfCountriesUseCase: FetchListOfCountriesUseCase,
-    private val holidaysCache: HolidayCache
+    private val getCurrentLocationUseCase: GetCurrentLocationUseCase,
+    private val holidaysCache: HolidayCache,
+    @ApplicationContext context: Context
 ) : ViewModel(){
     private val _state = MutableStateFlow(
         CalendarScreenState(
@@ -51,21 +66,49 @@ class CalendarScreenViewModel @Inject constructor(
 
     val holidays = MutableStateFlow<List<Holiday>>(emptyList())
     val countries = MutableStateFlow<List<Country>>(emptyList())
+    val drawerItems = MutableStateFlow<List<DrawerItem>>(emptyList())
 
     init {
         viewModelScope.launch {
+            getCurrentLocation()
             fetchHolidays()
             fetchCountries()
         }
+
+        drawerItems.value = listOf(
+            DrawerItem(
+                route = Route.Settings,
+                icon = Icons.Rounded.Settings,
+                title = R.string.menu_settings
+            ),
+            DrawerItem(
+                route = Route.About,
+                icon = Icons.Rounded.Info,
+                title = R.string.menu_about
+            )
+        )
     }
 
-    suspend fun fetchHolidays(){
+    suspend fun getCurrentLocation() {
         withContext(Dispatchers.IO){
-            holidays.value = fetchHolidaysUseCase.fetchHolidays(state.value.currentYear, state.value.country, state.value.state)
+            getCurrentLocationUseCase.getCurrentLocation().apply {
+                _state.update {
+                    it.copy(country = first, state = second)
+                }
+            }
         }
     }
 
-    suspend fun fetchCountries(){
+
+    suspend fun fetchHolidays(){
+        withContext(Dispatchers.IO){
+            state.value.country?.let{ country ->
+                holidays.value = fetchHolidaysUseCase.fetchHolidays(state.value.currentYear, country, state.value.state)
+            }
+        }
+    }
+
+    private suspend fun fetchCountries(){
         withContext(Dispatchers.IO){
             countries.value = fetchListOfCountriesUseCase.fetchListOfCountries()
         }
@@ -79,7 +122,7 @@ class CalendarScreenViewModel @Inject constructor(
 
                     _state.update {
                         val newCurrentYear = if(action.increment) it.currentYear + 1 else it.currentYear - 1
-                        val newCurrentMonth : YearMonth;
+                        val newCurrentMonth : YearMonth
                         val newCurrentWeek : Week
                         if(newCurrentYear == LocalDate.now().year){
                             newCurrentMonth = YearMonth.now()

@@ -79,7 +79,6 @@ private fun MenuIcon(
     onAction: (NavigationAction) -> Unit
 ) {
     val scope = rememberCoroutineScope()
-    println("isRootRoute: $isRootRoute")
     if(isRootRoute){
         Icon(
             imageVector = Icons.Rounded.Menu,
@@ -113,7 +112,6 @@ private fun TitleContent(
     onAction: (NavigationAction) -> Unit,
     currentRoute: State<Route?>
 ) {
-    println("currentRoute: ${currentRoute.value?.routeName}")
     val title = when(currentRoute.value){
         Route.Holidays -> stringResource(id = R.string.feat_holidays_title)
         Route.About -> stringResource(id = R.string.menu_about)

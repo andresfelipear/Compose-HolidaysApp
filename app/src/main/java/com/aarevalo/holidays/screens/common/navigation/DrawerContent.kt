@@ -26,6 +26,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.aarevalo.holidays.R
+import com.aarevalo.holidays.domain.model.DrawerItem
 import com.aarevalo.holidays.navigation.Route
 
 @Composable

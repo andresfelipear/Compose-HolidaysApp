@@ -27,12 +27,11 @@ import com.aarevalo.holidays.screens.yearCalendar.YearScreenRoot
 @Composable
 fun NavigationContent(
     padding: PaddingValues,
-    screenNavigator: ScreensNavigator
+    screenNavigator: ScreensNavigator,
+    viewModel: CalendarScreenViewModel
 ){
     val parentNavController = rememberNavController()
     screenNavigator.setParentNavController(parentNavController)
-
-    val viewModel: CalendarScreenViewModel = hiltViewModel()
 
     Surface(
         modifier = Modifier
@@ -51,7 +50,9 @@ fun NavigationContent(
 
                 NavHost(
                     navController = mainNestedNavController,
-                    startDestination = Route.YearTab.routeName
+                    startDestination = Route.YearTab.routeName,
+                    enterTransition = { fadeIn(animationSpec = tween(200)) },
+                    exitTransition = { fadeOut(animationSpec = tween(200)) },
                 ){
                     composable(route = Route.YearTab.routeName){
                         YearScreenRoot(viewModel = viewModel)
@@ -77,7 +78,9 @@ fun NavigationContent(
 
                 NavHost(
                     navController = holidaysNestedNavController,
-                    startDestination = Route.Holidays.routeName
+                    startDestination = Route.Holidays.routeName,
+                    enterTransition = { fadeIn(animationSpec = tween(200)) },
+                    exitTransition = { fadeOut(animationSpec = tween(200)) },
                 ){
                     composable(route = Route.Holidays.routeName){
                         HolidaysScreenRoot(viewModel = viewModel)

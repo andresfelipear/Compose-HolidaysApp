@@ -9,6 +9,6 @@ data class CalendarScreenState(
     val currentYear: Int,
     val currentMonth: YearMonth,
     val currentWeek: Week,
-    val country: Country,
+    val country: Country? = null,
     val state: State? = null
 )
