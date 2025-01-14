@@ -37,9 +37,20 @@ class ScreensNavigator {
                     null -> null
                     else -> throw RuntimeException("unsupported bottom tab: $routeName")
                 }
-                Pair(backStackEntry, bottomTab)
-            }.collect{ (backStackEntry, bottomTab) ->
+
+                val route = when(val routeName = backStackEntry.destination.route) {
+                    Route.MainTab.navCommand -> Route.MainTab
+                    Route.HolidaysTab.navCommand -> Route.HolidaysTab
+                    Route.Settings.navCommand -> Route.Settings
+                    Route.About.navCommand -> Route.About
+                    null -> null
+                    else -> throw RuntimeException("unsupported route $routeName")
+                }
+                Pair(route, bottomTab)
+            }.collect{ (route, bottomTab) ->
                 currentBottomTab.value = bottomTab
+                currentRoute.value = route
+                isRootRoute.value = route != Route.About && route != Route.Settings
             }
         }
     }
@@ -54,6 +65,7 @@ class ScreensNavigator {
                     Route.MonthTab.navCommand -> Route.MonthTab
                     Route.YearTab.navCommand -> Route.YearTab
                     Route.WeekTab.navCommand -> Route.WeekTab
+                    Route.Holidays.navCommand -> Route.Holidays
                     null -> null
                     else -> throw RuntimeException("unsupported route $routeName")
 
@@ -61,7 +73,7 @@ class ScreensNavigator {
                 Pair(backStackEntry, route)
             }.collect{ (backStackEntry, route) ->
                 currentRoute.value = route
-                isRootRoute.value = route == Route.YearTab
+                isRootRoute.value = route != Route.About && route != Route.Settings
             }
         }
     }
@@ -97,6 +109,11 @@ class ScreensNavigator {
             }
             else -> nestedNavController.navigate(route.navCommand)
         }
+    }
+
+    fun navigateBack()
+    {
+        parentNavController.navigateUp()
     }
 
     private fun navigateToDestination(route: String){

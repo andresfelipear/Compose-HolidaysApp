@@ -40,7 +40,6 @@ fun DrawerContent(
             .fillMaxHeight()
             .fillMaxWidth(0.95f)
     ) {
-        // Header
         Surface(
             modifier = Modifier
                 .clip(RoundedCornerShape(topEnd = 16.dp, bottomEnd = 16.dp))

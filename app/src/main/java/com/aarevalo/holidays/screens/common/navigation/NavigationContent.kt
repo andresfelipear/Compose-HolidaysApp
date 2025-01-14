@@ -66,7 +66,17 @@ fun NavigationContent(
             }
 
             composable(Route.HolidaysTab.routeName){
-                HolidaysScreenRoot(viewModel = viewModel)
+                val holidaysNestedNavController = rememberNavController()
+                screenNavigator.setNestedNavController(holidaysNestedNavController)
+
+                NavHost(
+                    navController = holidaysNestedNavController,
+                    startDestination = Route.Holidays.routeName
+                ){
+                    composable(route = Route.Holidays.routeName){
+                        HolidaysScreenRoot(viewModel = viewModel)
+                    }
+                }
             }
 
             composable(Route.Settings.routeName){

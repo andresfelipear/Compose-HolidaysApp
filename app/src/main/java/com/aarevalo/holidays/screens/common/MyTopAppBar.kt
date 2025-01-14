@@ -2,6 +2,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.rounded.Menu
 import androidx.compose.material3.DrawerState
@@ -14,6 +15,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
@@ -27,15 +29,18 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.aarevalo.holidays.R
-import com.aarevalo.holidays.screens.common.navigation.NavigationRootAction
+import com.aarevalo.holidays.navigation.Route
+import com.aarevalo.holidays.screens.common.navigation.NavigationAction
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MyTopAppBar(modifier: Modifier = Modifier,
-                onAction: (NavigationRootAction) -> Unit = {},
-                isNotHomeTab: Boolean = false,
-                drawerState: DrawerState) {
+                onAction: (NavigationAction) -> Unit,
+                isHolidaysTab: Boolean,
+                isRootRoute: Boolean,
+                drawerState: DrawerState,
+                currentRoute: State<Route?>) {
     var isFilterMenuExpanded by remember { mutableStateOf(false) }
     val context = LocalContext.current
     var filterMenuText by remember {
@@ -46,18 +51,21 @@ fun MyTopAppBar(modifier: Modifier = Modifier,
         modifier = modifier,
         navigationIcon = {
             MenuIcon(
-                drawerState = drawerState
+                drawerState = drawerState,
+                isRootRoute = isRootRoute,
+                onAction = onAction
             )
         },
         title = {
-            key(isNotHomeTab) {
+            key(isHolidaysTab) {
                 TitleContent(
-                    isNotHomeTab = isNotHomeTab,
+                    isHolidaysTab = isHolidaysTab,
                     filterMenuText = filterMenuText,
                     isFilterMenuExpanded = isFilterMenuExpanded,
                     onFilterMenuExpandedChange = { isFilterMenuExpanded = it },
                     onFilterMenuTextChange = { filterMenuText = it },
-                    onAction = onAction
+                    onAction = onAction,
+                    currentRoute = currentRoute
                 )
             }
         }
@@ -65,41 +73,65 @@ fun MyTopAppBar(modifier: Modifier = Modifier,
 }
 
 @Composable
-private fun MenuIcon(drawerState: DrawerState) {
+private fun MenuIcon(
+    drawerState: DrawerState,
+    isRootRoute: Boolean,
+    onAction: (NavigationAction) -> Unit
+) {
     val scope = rememberCoroutineScope()
-    Icon(
-        imageVector = Icons.Rounded.Menu,
-        contentDescription = stringResource(id = R.string.menu),
-        tint = MaterialTheme.colorScheme.onSurface,
-        modifier = Modifier.clickable {
-            scope.launch {
-                drawerState.open()
+    println("isRootRoute: $isRootRoute")
+    if(isRootRoute){
+        Icon(
+            imageVector = Icons.Rounded.Menu,
+            contentDescription = stringResource(id = R.string.menu),
+            tint = MaterialTheme.colorScheme.onSurface,
+            modifier = Modifier.clickable {
+                scope.launch {
+                    drawerState.open()
+                }
             }
-        }
-    )
+        )
+    } else {
+        Icon(
+            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+            contentDescription = stringResource(id = R.string.navigate_back_icon),
+            tint = MaterialTheme.colorScheme.onSurface,
+            modifier = Modifier.clickable {
+                onAction(NavigationAction.OnNavigateBack)
+            }
+        )
+    }
 }
 
 @Composable
 private fun TitleContent(
-    isNotHomeTab: Boolean,
+    isHolidaysTab: Boolean,
     filterMenuText: String,
     isFilterMenuExpanded: Boolean,
     onFilterMenuExpandedChange: (Boolean) -> Unit,
     onFilterMenuTextChange: (String) -> Unit,
-    onAction: (NavigationRootAction) -> Unit
+    onAction: (NavigationAction) -> Unit,
+    currentRoute: State<Route?>
 ) {
+    println("currentRoute: ${currentRoute.value?.routeName}")
+    val title = when(currentRoute.value){
+        Route.HolidaysTab -> stringResource(id = R.string.feat_holidays_title)
+        Route.About -> stringResource(id = R.string.menu_about)
+        Route.Settings -> stringResource(id = R.string.menu_settings)
+        else -> filterMenuText
+    }
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier.padding(horizontal = 16.dp)
     ) {
         Text(
             modifier = Modifier.align(Alignment.CenterVertically),
-            text = if(isNotHomeTab) stringResource(id = R.string.feat_holidays_title) else filterMenuText,
+            text = title,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             fontWeight = FontWeight.Bold,
         )
 
-        if (!isNotHomeTab) {
+        if (!isHolidaysTab) {
             FilterButton(
                 isExpanded = isFilterMenuExpanded,
                 onExpandedChange = onFilterMenuExpandedChange,
@@ -116,7 +148,7 @@ private fun TitleContent(
 private fun FilterButton(
     isExpanded: Boolean,
     onExpandedChange: (Boolean) -> Unit,
-    onMenuItemClick: (NavigationRootAction, String) -> Unit
+    onMenuItemClick: (NavigationAction, String) -> Unit
 ) {
     val context = LocalContext.current
 
@@ -139,7 +171,7 @@ private fun FilterButton(
                 onClick = {
                     onExpandedChange(false)
                     onMenuItemClick(
-                        NavigationRootAction.OnSelectedYearlyView,
+                        NavigationAction.OnSelectedYearlyView,
                         context.getString(R.string.feat_calendar_filter_by_year)
                     )
                 }
@@ -150,7 +182,7 @@ private fun FilterButton(
                 onClick = {
                     onExpandedChange(false)
                     onMenuItemClick(
-                        NavigationRootAction.OnSelectedMonthlyView,
+                        NavigationAction.OnSelectedMonthlyView,
                         context.getString(R.string.feat_calendar_filter_by_month)
                     )
                 }
@@ -161,8 +193,8 @@ private fun FilterButton(
                 onClick = {
                     onExpandedChange(false)
                     onMenuItemClick(
-                        NavigationRootAction.OnSelectedWeeklyView,
-                        context.getString(R.string.feat_calendar_filter_by_day)
+                        NavigationAction.OnSelectedWeeklyView,
+                        context.getString(R.string.feat_calendar_filter_by_week)
                     )
                 }
             )
