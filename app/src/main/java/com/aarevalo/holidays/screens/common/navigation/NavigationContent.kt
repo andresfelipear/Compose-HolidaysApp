@@ -62,6 +62,12 @@ fun NavigationContent(
                     composable(route = Route.WeekTab.routeName){
                         WeeklyCalendarScreenRoot(viewModel = viewModel)
                     }
+                    composable(Route.Settings.routeName){
+                        SettingsScreenRoot(viewModel = viewModel)
+                    }
+                    composable(Route.About.routeName){
+                        AboutScreen()
+                    }
                 }
             }
 
@@ -75,6 +81,12 @@ fun NavigationContent(
                 ){
                     composable(route = Route.Holidays.routeName){
                         HolidaysScreenRoot(viewModel = viewModel)
+                    }
+                    composable(Route.Settings.routeName){
+                        SettingsScreenRoot(viewModel = viewModel)
+                    }
+                    composable(Route.About.routeName){
+                        AboutScreen()
                     }
                 }
             }

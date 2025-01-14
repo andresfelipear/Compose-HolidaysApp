@@ -115,7 +115,7 @@ private fun TitleContent(
 ) {
     println("currentRoute: ${currentRoute.value?.routeName}")
     val title = when(currentRoute.value){
-        Route.HolidaysTab -> stringResource(id = R.string.feat_holidays_title)
+        Route.Holidays -> stringResource(id = R.string.feat_holidays_title)
         Route.About -> stringResource(id = R.string.menu_about)
         Route.Settings -> stringResource(id = R.string.menu_settings)
         else -> filterMenuText

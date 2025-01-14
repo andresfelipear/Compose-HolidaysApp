@@ -32,25 +32,12 @@ class ScreensNavigator {
                 val bottomTab = when(val routeName = backStackEntry.destination.route) {
                     Route.MainTab.navCommand -> BottomTab.Main
                     Route.HolidaysTab.navCommand -> BottomTab.Holidays
-                    Route.Settings.navCommand -> null
-                    Route.About.navCommand -> null
                     null -> null
                     else -> throw RuntimeException("unsupported bottom tab: $routeName")
                 }
-
-                val route = when(val routeName = backStackEntry.destination.route) {
-                    Route.MainTab.navCommand -> Route.MainTab
-                    Route.HolidaysTab.navCommand -> Route.HolidaysTab
-                    Route.Settings.navCommand -> Route.Settings
-                    Route.About.navCommand -> Route.About
-                    null -> null
-                    else -> throw RuntimeException("unsupported route $routeName")
-                }
-                Pair(route, bottomTab)
+                Pair(backStackEntry, bottomTab)
             }.collect{ (route, bottomTab) ->
                 currentBottomTab.value = bottomTab
-                currentRoute.value = route
-                isRootRoute.value = route != Route.About && route != Route.Settings
             }
         }
     }
@@ -66,9 +53,10 @@ class ScreensNavigator {
                     Route.YearTab.navCommand -> Route.YearTab
                     Route.WeekTab.navCommand -> Route.WeekTab
                     Route.Holidays.navCommand -> Route.Holidays
+                    Route.Settings.navCommand -> Route.Settings
+                    Route.About.navCommand -> Route.About
                     null -> null
                     else -> throw RuntimeException("unsupported route $routeName")
-
             }
                 Pair(backStackEntry, route)
             }.collect{ (backStackEntry, route) ->
@@ -103,34 +91,13 @@ class ScreensNavigator {
     }
 
     fun toRoute(route: Route){
-        when(route){
-            is Route.Settings, is Route.About -> {
-                navigateToDestination(route.navCommand)
-            }
-            else -> nestedNavController.navigate(route.navCommand)
-        }
+        nestedNavController.navigate(route.navCommand)
     }
 
     fun navigateBack()
     {
-        parentNavController.navigateUp()
-    }
-
-    private fun navigateToDestination(route: String){
-        val destinationExists = parentNavController.graph.findNode(route) != null
-
-        if (destinationExists) {
-            parentNavController.navigate(route) {
-                parentNavController.graph.startDestinationRoute?.let { startRoute ->
-                    popUpTo(startRoute) {
-                        saveState = true
-                    }
-                    launchSingleTop = true
-                    restoreState = true
-                }
-            }
-        } else{
-            Log.e("Navigation", "Destination route does not exist: $route")
+        if(!nestedNavController.popBackStack()){
+            parentNavController.popBackStack()
         }
     }
 }
