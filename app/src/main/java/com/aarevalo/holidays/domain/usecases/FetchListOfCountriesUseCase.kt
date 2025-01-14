@@ -11,7 +11,6 @@ class FetchListOfCountriesUseCase @Inject constructor(
     private val holidaysApi: HolidaysApi,
     private val countryLocalDataSource: CountryLocalDataSource
 ){
-    private var countries: List<Country> = emptyList()
 
     suspend fun fetchListOfCountries(): List<Country> {
         return withContext(Dispatchers.IO) {

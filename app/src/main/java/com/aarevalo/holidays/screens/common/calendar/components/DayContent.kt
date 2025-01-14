@@ -1,3 +1,5 @@
+@file:Suppress("UNUSED_VARIABLE")
+
 package com.aarevalo.holidays.screens.common.calendar.components
 
 import android.annotation.SuppressLint

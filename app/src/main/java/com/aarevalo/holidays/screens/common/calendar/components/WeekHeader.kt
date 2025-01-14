@@ -7,7 +7,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
-import com.aarevalo.holidays.screens.common.calendar.CalendarScreenAction
 import java.time.DayOfWeek
 import java.util.Locale
 import java.time.format.TextStyle.SHORT

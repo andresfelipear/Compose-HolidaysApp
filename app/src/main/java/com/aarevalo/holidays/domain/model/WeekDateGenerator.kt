@@ -6,7 +6,7 @@ import java.time.temporal.WeekFields
 import java.util.Locale
 
 object WeekDateGenerator {
-    fun generateWeekDates(yearMonth: YearMonth, weekNumber: Int): List<LocalDate> {
+    private fun generateWeekDates(yearMonth: YearMonth, weekNumber: Int): List<LocalDate> {
         val firstDayOfMonth = yearMonth.atDay(1)
         val weekFields = WeekFields.of(Locale.getDefault())
 

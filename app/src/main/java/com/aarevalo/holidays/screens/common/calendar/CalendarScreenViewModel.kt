@@ -1,8 +1,5 @@
 package com.aarevalo.holidays.screens.common.calendar
 
-import android.annotation.SuppressLint
-import android.content.Context
-import android.location.Geocoder
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Info
 import androidx.compose.material.icons.rounded.Settings
@@ -19,9 +16,7 @@ import com.aarevalo.holidays.domain.usecases.FetchHolidaysUseCase
 import com.aarevalo.holidays.domain.usecases.FetchListOfCountriesUseCase
 import com.aarevalo.holidays.domain.usecases.GetCurrentLocationUseCase
 import com.aarevalo.holidays.navigation.Route
-import com.google.android.gms.location.LocationServices
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import io.github.boguszpawlowski.composecalendar.week.Week
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
@@ -32,18 +27,14 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.time.LocalDate
 import java.time.YearMonth
-import java.util.Locale
 import javax.inject.Inject
 
-@Suppress("DEPRECATION")
-@SuppressLint("NewApi")
 @HiltViewModel
 class CalendarScreenViewModel @Inject constructor(
     private val fetchHolidaysUseCase: FetchHolidaysUseCase,
     private val fetchListOfCountriesUseCase: FetchListOfCountriesUseCase,
     private val getCurrentLocationUseCase: GetCurrentLocationUseCase,
     private val holidaysCache: HolidayCache,
-    @ApplicationContext context: Context
 ) : ViewModel(){
     private val _state = MutableStateFlow(
         CalendarScreenState(

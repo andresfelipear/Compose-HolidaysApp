@@ -11,7 +11,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.aarevalo.holidays.data.local.FakeHolidaysLocalDataSource.holidays
@@ -75,7 +74,7 @@ fun MonthViewScreen(
                     .fillMaxSize(),
                 calendarState = calendarState,
                 monthHeader = { MonthHeader(state = it, onAction = onAction) },
-                daysOfWeekHeader = { WeekHeader(daysOfWeek = it, ) },
+                daysOfWeekHeader = { WeekHeader(daysOfWeek = it ) },
                 dayContent = { DayContent(state = it, holidays = monthHolidays) },
             )
         }

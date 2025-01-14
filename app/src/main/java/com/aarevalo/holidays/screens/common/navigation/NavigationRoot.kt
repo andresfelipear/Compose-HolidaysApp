@@ -1,13 +1,10 @@
 package com.aarevalo.holidays.screens.common.navigation
 
-import MyTopAppBar
+import com.aarevalo.holidays.screens.common.MyTopAppBar
 import android.content.pm.PackageManager
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Info
-import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ModalNavigationDrawer
@@ -20,19 +17,15 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.aarevalo.holidays.R
-import com.aarevalo.holidays.domain.model.DrawerItem
 import com.aarevalo.holidays.navigation.Route
 import com.aarevalo.holidays.navigation.ScreensNavigator
 import com.aarevalo.holidays.screens.common.MyBottomTabsBar
 import com.aarevalo.holidays.screens.common.calendar.CalendarScreenViewModel
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import kotlin.reflect.jvm.internal.impl.descriptors.Visibilities.Local
 
 @Composable
 fun NavigationRoot(

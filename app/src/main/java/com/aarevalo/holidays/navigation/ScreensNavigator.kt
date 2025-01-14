@@ -35,8 +35,8 @@ class ScreensNavigator {
                     null -> null
                     else -> throw RuntimeException("unsupported bottom tab: $routeName")
                 }
-                Pair(backStackEntry, bottomTab)
-            }.collect{ (route, bottomTab) ->
+                bottomTab
+            }.collect{ bottomTab ->
                 currentBottomTab.value = bottomTab
             }
         }
@@ -58,8 +58,8 @@ class ScreensNavigator {
                     null -> null
                     else -> throw RuntimeException("unsupported route $routeName")
             }
-                Pair(backStackEntry, route)
-            }.collect{ (backStackEntry, route) ->
+                route
+            }.collect{route ->
                 currentRoute.value = route
                 isRootRoute.value = route != Route.About && route != Route.Settings
             }
