@@ -61,7 +61,7 @@ fun AboutScreen(
                 color = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.clickable {
                     val intent = Intent(Intent.ACTION_SENDTO).apply {
-                        data = Uri.parse("mailto:andresfelipear@gmail.com")
+                        data = Uri.parse("mailto:${context.getString(R.string.contact_email)}")
                     }
                     context.startActivity(intent)
                 }

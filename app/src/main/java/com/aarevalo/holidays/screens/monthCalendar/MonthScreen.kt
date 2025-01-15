@@ -19,9 +19,9 @@ import com.aarevalo.holidays.domain.model.Holiday
 import com.aarevalo.holidays.screens.common.calendar.CalendarScreenAction
 import com.aarevalo.holidays.screens.common.calendar.CalendarScreenState
 import com.aarevalo.holidays.screens.common.calendar.CalendarScreenViewModel
-import com.aarevalo.holidays.screens.common.calendar.components.DayContent
-import com.aarevalo.holidays.screens.common.calendar.components.MonthHeader
-import com.aarevalo.holidays.screens.common.calendar.components.WeekHeader
+import com.aarevalo.holidays.screens.monthCalendar.components.DayContent
+import com.aarevalo.holidays.screens.monthCalendar.components.MonthHeader
+import com.aarevalo.holidays.screens.monthCalendar.components.WeekHeader
 import com.aarevalo.holidays.screens.holidays.components.HolidayItem
 import io.github.boguszpawlowski.composecalendar.StaticCalendar
 import io.github.boguszpawlowski.composecalendar.rememberCalendarState

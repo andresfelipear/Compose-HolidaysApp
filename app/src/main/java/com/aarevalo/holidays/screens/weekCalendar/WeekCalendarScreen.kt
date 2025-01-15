@@ -66,11 +66,10 @@ fun WeeklyCalendarScreen(
         verticalArrangement = Arrangement.spacedBy(24.dp),
     ){
         item{
-            val calendarState = rememberWeekCalendarState()
-            calendarState.weekState.currentWeek = state.currentWeek
-            WeekCalendar(
-                calendarState = calendarState,
-                weekHeader = { WeekHeaderWeekCalendar(state = it, onAction = onAction) },
+            CustomWeekCalendar(
+                week = state.currentWeek,
+                onAction = onAction,
+                holidays = holidays
             )
         }
         items(
