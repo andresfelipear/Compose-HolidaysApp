@@ -19,9 +19,6 @@ import com.aarevalo.holidays.screens.common.calendar.CalendarScreenAction
 import com.aarevalo.holidays.screens.common.calendar.CalendarScreenState
 import com.aarevalo.holidays.screens.common.calendar.CalendarScreenViewModel
 import com.aarevalo.holidays.screens.holidays.components.HolidayItem
-import com.aarevalo.holidays.screens.weekCalendar.components.WeekHeaderWeekCalendar
-import io.github.boguszpawlowski.composecalendar.WeekCalendar
-import io.github.boguszpawlowski.composecalendar.rememberWeekCalendarState
 import io.github.boguszpawlowski.composecalendar.week.Week
 import java.time.YearMonth
 
@@ -57,8 +54,8 @@ fun WeeklyCalendarScreen(
     holidays: List<Holiday>
 ){
     val weekHolidays by remember(state.currentWeek, holidays) {
-        mutableStateOf(holidays.filter { it.date.month == state.currentMonth.month || it.date.month == state.currentMonth.plusMonths(1).month || it.date.month == state.currentMonth.minusMonths(1).month}.filter{
-            it.date in state.currentWeek.start .. state.currentWeek.end
+        mutableStateOf(holidays.filter { holiday ->
+            holiday.date in state.currentWeek.start .. state.currentWeek.end
         })
     }
     LazyColumn(

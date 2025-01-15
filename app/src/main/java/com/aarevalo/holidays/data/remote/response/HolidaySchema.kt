@@ -11,4 +11,5 @@ data class HolidaySchema(
     @SerializedName("global")val global: Boolean,
     @SerializedName("counties")val counties: List<String>,
     @SerializedName("launchYear")val launchYear: Int,
+    @SerializedName("types")val types: List<String>
 )

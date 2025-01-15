@@ -23,7 +23,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.aarevalo.holidays.data.local.FakeHolidaysLocalDataSource.holidays
 import com.aarevalo.holidays.domain.model.Holiday
 import com.aarevalo.holidays.screens.common.calendar.CalendarScreenAction
 import com.aarevalo.holidays.screens.weekCalendar.components.CustomWeekHeaderWeekCalendar
@@ -40,7 +39,7 @@ fun CustomWeekCalendar(
     holidays: List<Holiday>,
     onAction: (CalendarScreenAction) -> Unit
 ) {
-    val daysOfWeek = DayOfWeek.entries.toTypedArray()
+    val daysOfWeek = listOf(DayOfWeek.SUNDAY, DayOfWeek.MONDAY, DayOfWeek.TUESDAY, DayOfWeek.WEDNESDAY, DayOfWeek.THURSDAY, DayOfWeek.FRIDAY, DayOfWeek.SATURDAY)
     val weekHolidays = holidays.filter { it.date in week.start..week.end }
 
     Column(

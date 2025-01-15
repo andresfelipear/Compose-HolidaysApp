@@ -4,6 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.aarevalo.holidays.domain.model.Country
@@ -46,11 +48,16 @@ fun YearScreen(
     onAction: (CalendarScreenAction) -> Unit = {},
     holidays: List<Holiday> = emptyList()
 ){
+    val currentYearHolidays by remember(state.currentYear, holidays) {
+        mutableStateOf(
+            holidays.filter { it.date.year == state.currentYear }
+        )
+    }
     YearCalendarComponent(
         modifier = modifier,
         currentYear = state.currentYear,
         onAction = onAction,
-        holidays = holidays
+        holidays = currentYearHolidays
     )
 }
 

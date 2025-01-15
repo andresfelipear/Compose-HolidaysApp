@@ -58,7 +58,12 @@ fun MonthViewScreen(
     holidays: List<Holiday>
 ){
     val monthHolidays by remember(state.currentMonth, holidays) {
-        mutableStateOf(holidays.filter { it.date.month == state.currentMonth.month })
+        mutableStateOf(holidays
+            .filter {
+                it.date.year == state.currentYear &&
+                it.date.month == state.currentMonth.month
+            }
+        )
     }
     LazyColumn(
         modifier = modifier.fillMaxSize(),

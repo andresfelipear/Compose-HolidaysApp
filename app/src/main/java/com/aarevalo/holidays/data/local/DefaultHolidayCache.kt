@@ -8,7 +8,6 @@ import kotlin.concurrent.withLock
 class DefaultHolidayCache : HolidayCache {
 
     private val lock = ReentrantLock()
-
     private val holidays = mutableListOf<Holiday>()
 
     override fun refreshHolidays(newHolidays: List<Holiday>) {

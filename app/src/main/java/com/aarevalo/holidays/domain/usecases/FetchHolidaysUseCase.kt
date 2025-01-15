@@ -20,8 +20,14 @@ class FetchHolidaysUseCase @Inject constructor(
 
     suspend fun fetchHolidays(year: Int, country: Country, state: State? = null): List<Holiday> {
         return withContext(Dispatchers.IO) {
-            holidays = holidaysCache.getHolidays() ?: fetchHolidaysFromNetwork(year, country, state)
-            holidaysCache.refreshHolidays(holidays)
+            holidays = holidaysCache.getHolidays() ?: run {
+                val currentYearHolidays = fetchHolidaysFromNetwork(year, country, state)
+                val previousYearHolidays = fetchHolidaysFromNetwork(year - 1, country, state)
+                val nextYearHolidays = fetchHolidaysFromNetwork(year + 1, country, state)
+                val allHolidays = currentYearHolidays + previousYearHolidays + nextYearHolidays
+                holidaysCache.refreshHolidays(allHolidays)
+                allHolidays
+            }
             holidays
         }
     }
@@ -33,7 +39,8 @@ class FetchHolidaysUseCase @Inject constructor(
     ): List<Holiday> {
         return holidaysApi.fetchHolidaysPerCountryAndYear(year, country.code)
             .filter { holiday ->
-                (holiday.counties == null) || holiday.counties.contains("${country.code}-${state?.code}")
+                holiday.types.contains("Public") &&
+                    ((holiday.counties == null) || holiday.counties.contains("${country.code}-${state?.code}"))
             }
             .map { holidaySchema ->
                 Holiday(name = holidaySchema.name, date = LocalDate.parse(holidaySchema.date))
