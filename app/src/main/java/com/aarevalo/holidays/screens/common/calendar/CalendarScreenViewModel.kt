@@ -12,9 +12,7 @@ import com.aarevalo.holidays.domain.model.DrawerItem
 import com.aarevalo.holidays.domain.model.Holiday
 import com.aarevalo.holidays.domain.model.State
 import com.aarevalo.holidays.domain.model.WeekDateGenerator
-import com.aarevalo.holidays.domain.usecases.FetchHolidaysUseCase
-import com.aarevalo.holidays.domain.usecases.FetchListOfCountriesUseCase
-import com.aarevalo.holidays.domain.usecases.GetCurrentLocationUseCase
+import com.aarevalo.holidays.domain.usecases.HolidayUseCase
 import com.aarevalo.holidays.navigation.Route
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.boguszpawlowski.composecalendar.week.Week
@@ -31,9 +29,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CalendarScreenViewModel @Inject constructor(
-    private val fetchHolidaysUseCase: FetchHolidaysUseCase,
-    private val fetchListOfCountriesUseCase: FetchListOfCountriesUseCase,
-    private val getCurrentLocationUseCase: GetCurrentLocationUseCase,
+    private val holidayUseCase: HolidayUseCase,
     private val holidaysCache: HolidayCache,
 ) : ViewModel(){
     private val _state = MutableStateFlow(
@@ -82,7 +78,7 @@ class CalendarScreenViewModel @Inject constructor(
 
     suspend fun getCurrentLocation() {
         withContext(Dispatchers.IO){
-            getCurrentLocationUseCase.getCurrentLocation().apply {
+            holidayUseCase.getCurrentLocationUseCase().apply {
                 _state.update {
                     it.copy(country = first, state = second)
                 }
@@ -94,14 +90,14 @@ class CalendarScreenViewModel @Inject constructor(
     suspend fun fetchHolidays(){
         withContext(Dispatchers.IO){
             state.value.country?.let{ country ->
-                holidays.value = fetchHolidaysUseCase.fetchHolidays(state.value.currentYear, country, state.value.state)
+                holidays.value = holidayUseCase.fetchHolidaysUseCase(state.value.currentYear, country, state.value.state)
             }
         }
     }
 
     private suspend fun fetchCountries(){
         withContext(Dispatchers.IO){
-            countries.value = fetchListOfCountriesUseCase.fetchListOfCountries()
+            countries.value = holidayUseCase.fetchListOfCountriesUseCase()
         }
     }
 

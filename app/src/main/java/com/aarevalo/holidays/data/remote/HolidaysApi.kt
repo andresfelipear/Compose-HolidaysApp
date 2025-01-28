@@ -12,4 +12,8 @@ interface HolidaysApi {
 
     @GET("/api/v3/AvailableCountries")
     suspend fun fetchListOfCountries() : List<CountrySchema>
+
+    companion object {
+        const val BASE_URL = "https://date.nager.at"
+    }
 }
