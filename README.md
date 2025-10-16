@@ -5,7 +5,7 @@ Compose-Holidays is a modern Android app built with Jetpack Compose that helps y
 ## Table of Contents
 
 - [Features](#features)
-- [Screenshots](#screenshots)
+- [Visual Tour](#visual-tour)
 - [Technical Architecture](#technical-architecture)
 - [Offline-First Design](#offline-first-design)
 - [Key Technologies & Libraries](#key-technologies--libraries)
@@ -25,37 +25,34 @@ Compose-Holidays is a modern Android app built with Jetpack Compose that helps y
 - **Material 3 theming**: Polished UI with light/dark theme support.
 - **No sign-in required**: Uses the public Nager.Date API.
 
-## Screenshots
+## Visual Tour
 
-> Images are included under `screenshots/`.
+> All screenshots live under `screenshots/`.
 
-- **Feature graphic**
+### Home — Yearly view
+Browse the full year at a glance. Holidays are highlighted; quickly jump across years.
 
-  ![Feature Graphic](screenshots/feature%20graphic.png)
+<img src="screenshots/homeScreen.png" alt="Yearly view" width="199" height="402" />
 
-- **Yearly view (Home)**
+### Monthly view
+Focus on a single month to see holiday distribution and navigate day by day.
 
-  ![Yearly View](screenshots/homeScreen.png)
+<img src="screenshots/monthly_view.png" alt="Monthly view" width="199" height="402" />
 
-- **Monthly view**
+### Weekly view
+Drill into a week for a compact, focused look at upcoming holidays.
 
-  ![Monthly View](screenshots/monthly_view.png)
+<img src="screenshots/weeklyView.png" alt="Weekly view" width="199" height="402" />
 
-- **Weekly view**
+### Holidays list
+Scroll a consolidated list of holidays grouped by month for the selected year.
 
-  ![Weekly View](screenshots/weeklyView.png)
+<img src="screenshots/holidays_lists.png" alt="Holidays list" width="199" height="402" />
 
-- **Holidays list**
+### About
+See app details, acknowledgements, and library credits.
 
-  ![Holidays List](screenshots/holidays_lists.png)
-
-- **About**
-
-  ![About](screenshots/aboutTab.png)
-
-- **App icon**
-
-  ![App Icon](screenshots/Icon.png)
+<img src="screenshots/aboutTab.png" alt="About screen" width="199" height="402" />
 
 ## Technical Architecture
 
